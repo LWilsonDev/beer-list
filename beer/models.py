@@ -23,6 +23,10 @@ class Brewery(models.Model):
     town = models.CharField(max_length=50)
     image = models.URLField(blank=True)
     
+    def get_absolute_url(self):
+        """Returns the url to access a particular instance of a brewery."""
+        return reverse('brewery_detail', args=[str(self.id)])
+    
     def __str__(self):
         return self.name
         
@@ -37,6 +41,11 @@ class Beer(models.Model):
     def average_rating(self):
         all_ratings = map(lambda x: x.rating, self.review_set.all())
         return np.mean(all_ratings)
+        
+    def get_absolute_url(self):
+        """Returns the url to access a particular instance of a beer."""
+        return reverse('beer_detail', args=[str(self.id)])
+        
     
     def __str__(self):
         return self.name
