@@ -3,8 +3,8 @@
 <h1>All Beers</h1>
 {% for beer in beer_list %}
 <div>
-    <h2>{{ beer.name }}</h2>
-    <a href=#>{{ beer.brewery }}</a>
+    <h2><a href="{{ beer.get_absolute_url }}">{{ beer.name }}</a></h2>
+    <a href="{{ beer.brewery.get_absolute_url }}">{{ beer.brewery }}</a>
     <p>{{ beer.strength }}</p>
     <p>{{ beer.notes }}</p>
     <a href=#>(count) Reviews</a>

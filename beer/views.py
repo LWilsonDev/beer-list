@@ -27,3 +27,11 @@ def user_beer_list(request):
 class BeerListView(generic.ListView):
     model = Beer
   
+class BeerDetailView(generic.DetailView):
+    model = Beer 
+    
+class BreweryListView(generic.ListView):
+    model = Brewery    
+    
+class BreweryDetailView(generic.DetailView):
+    model = Brewery     

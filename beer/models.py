@@ -1,7 +1,7 @@
 from django.db import models
 from datetime import date
 from django.conf import settings
-
+from django.urls import reverse
 from django.utils import timezone 
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
@@ -25,7 +25,7 @@ class Brewery(models.Model):
     
     def get_absolute_url(self):
         """Returns the url to access a particular instance of a brewery."""
-        return reverse('brewery_detail', args=[str(self.id)])
+        return reverse('brewery-detail', args=[str(self.id)])
     
     def __str__(self):
         return self.name
@@ -44,7 +44,7 @@ class Beer(models.Model):
         
     def get_absolute_url(self):
         """Returns the url to access a particular instance of a beer."""
-        return reverse('beer_detail', args=[str(self.id)])
+        return reverse('beer-detail', args=[str(self.id)])
         
     
     def __str__(self):
