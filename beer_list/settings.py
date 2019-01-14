@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'beer',
     'payment',
     'taggit',
-    'ratings',
 ]
 
 MIDDLEWARE = [
