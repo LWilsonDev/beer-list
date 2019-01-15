@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css?family=Dancing+Script');
+@import url('https://fonts.googleapis.com/css?family=Special+Elite');
+
 .logo {
     height: 140px;
     width: 100px;
@@ -5,11 +8,13 @@
     background-repeat: no-repeat;
     z-index: 3;
     position: relative;
-    top: 15px;
-    left: 15px;
+    top: 19px;
+    left: 61px;
 }
 .logo-text {
-    
+    font-family: 'Special Elite', cursive;
+    padding-top: 10px;
+    font-size: 3em;
     
 }
 .logo-container {
@@ -17,7 +22,7 @@
     width: 160px;
     border-radius: 100%;
     z-index: 2;
-    background-color: white;
+    background-color: #f8f5ee;
     text-align: center;
     margin: 0 auto;
 }
@@ -33,4 +38,44 @@
     background-image: url('../images/logo.png');
     background-repeat: no-repeat;
     height:200px;
+}
+
+.index-jumbo {
+    background-color: #36393e;
+    color: #f8f5ee;
+}
+
+.display-flex{
+    display: flex;
+}
+
+.typewriter {
+    display:inline-block; 
+}
+
+/* https://css-tricks.com/snippets/css/typewriter-effect/ */
+.typewriter h1 {
+ width: 100%;
+  font-family: monospace;
+  overflow: hidden; /* Ensures the content is not revealed until the animation */
+  border-right: .15em solid orange; /* The typwriter cursor */
+  white-space: nowrap; /* Keeps the content on a single line */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .15em; /* Adjust as needed */
+  animation: 
+    typing 3s steps(30, end),
+    blink-caret .5s step-end 15;
+    
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: orange }
 }

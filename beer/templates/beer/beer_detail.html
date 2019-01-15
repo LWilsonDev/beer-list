@@ -2,7 +2,17 @@
 
 {% block content %}
 <h1>{{ beer.name }}</h1>
-<a>{{beer.brewery}}</a>
+<a>{{ beer.brewery }}</a>
 <p>{{ beer.strength }}</p>
+
+<a class='btn btn-success'>Add/edit beer details</a>
+<a class='btn btn-primary'>Leave Review</a>
+
+<h2>Your review:</h2>
+<a class='btn btn-success'>Edit</a>
+<a class='btn btn-danger'>Delete</a>
+<hr>
+<h3>What other people say:</h3>
+<h3>Other beers like this:</h3>
 
 {% endblock %}

@@ -13,7 +13,7 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#"><img style='height: 40px;' src="{% static 'images/logo.png' %}"></a>
+  <a class="navbar-brand" href="{% url 'index' %}"><img style='height: 40px;' src="{% static 'images/logo.png' %}"></a>
   <span class="navbar-text">
     {% if user.is_authenticated %}
   Hi {{ user.username }}!
@@ -34,23 +34,24 @@
      <a class="nav-item nav-link" href="#">Account</a>
      <a class="nav-item nav-link" href="{% url 'logout' %}">Log out</a>
      {% else %}
-     <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+     <a class="nav-item nav-link" href="{% url 'login' %}?next={{request.path}}">Login</a>
      <a class="nav-item nav-link" href="#">Sign Up</a>
      {% endif%}
     </div>
   </div>
   
 </nav>
+    {% if messages %}
+    <ul class='messages'>
+        {% for message in messages %}
+        <li class="{{ message.tags }}">
+            {{ message|safe }}
+            <a href="#" class="close">x</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
     
-    
-    
-    
-    
-    
- 
-    
-   
-      
 
     {% block content %}{% endblock %}
 

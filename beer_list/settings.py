@@ -41,7 +41,10 @@ INSTALLED_APPS = [
     'beer',
     'payment',
     'taggit',
+    'crispy_forms',
+    'bootstrap_modal_forms',
 ]
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -128,10 +131,10 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     )
 
-
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/homepage'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 

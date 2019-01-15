@@ -10,7 +10,7 @@ import numpy as np
 
 class Category(models.Model):
     
-    name = models.CharField(max_length=200, help_text='Enter a category (e.g. Ale)')
+    name = models.CharField(max_length=200, help_text='Enter a category (e.g. Ale)', blank=True)
     
     def __str__(self):
         """String for representing the Model object."""
@@ -19,9 +19,15 @@ class Category(models.Model):
 
 class Brewery(models.Model):
     name = models.CharField(max_length=100)
-    country = models.CharField(max_length=50)
-    town = models.CharField(max_length=50)
+    country = models.CharField(max_length=50, blank=True)
+    region = models.CharField(max_length=50, blank=True)
+    town = models.CharField(max_length=50, blank=True)
     image = models.URLField(blank=True)
+    founded_year = models.IntegerField(null=True, blank=True, help_text='e.g. 1998')
+    about = models.TextField(blank=True)
+    added_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='brewery_added_by',
+                            on_delete=models.CASCADE) 
+    added_date = models.DateTimeField(auto_now_add=True)
     
     def get_absolute_url(self):
         """Returns the url to access a particular instance of a brewery."""
@@ -32,11 +38,14 @@ class Brewery(models.Model):
         
 class Beer(models.Model):
     brewery = models.ForeignKey(Brewery, on_delete=models.CASCADE)
-    category = models.ManyToManyField(Category, help_text='Select a category for this beer')
+    category = models.ManyToManyField(Category, help_text='Select a category for this beer', blank=True)
     name = models.CharField(max_length=100)
-    strength = models.DecimalField(max_digits=4, decimal_places=1, blank=True)
+    strength = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
     image = models.URLField(blank=True)
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True, help_text='eg. IPA, Golden, Craft')
+    added_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='beer_added_by',
+                            on_delete=models.CASCADE) 
+    added_date = models.DateTimeField(auto_now_add=True)
     # https://www.codementor.io/jadianes/get-started-with-django-building-recommendation-review-app-du107yb1a
     def average_rating(self):
         all_ratings = map(lambda x: x.rating, self.review_set.all())
@@ -63,8 +72,8 @@ class Review(models.Model):
     rating = models.PositiveSmallIntegerField('Rating (stars)', blank=False, default=3, choices=RATING_CHOICES)
     
     class Meta: 
-        #order reviews alphabetically
-        ordering = ('beer', 'created')  
+        #order reviews alphabetically, newest first
+        ordering = ('beer', '-created')  
 
  
     

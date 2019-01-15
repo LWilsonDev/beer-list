@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h1>Add Beer</h1>
+<div class='container'>
+  <form action="" method="post">
+    {% csrf_token %}
+    <div class='row'>
+      <div class='col-sm-7 was-validated' novalidate="">
+     {{ form.brewery|as_crispy_field }}
+     </div>
+     <div class="col-sm-5">
+     <p>Brewery not listed?<a class="btn btn-primary" href="#"> Add it!</a></p>
+     </div>
+     </div>
+     <div class="was-validated" novalidate="">
+        {{ form.name|as_crispy_field }}
+        </div>
+         {{ form.tags|as_crispy_field }}
+     
+    
+   
+    <input class="btn btn-success" type="submit" value="Add Beer">
+  </form>
+  </div>
+{% endblock %}
