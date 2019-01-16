@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}{% load crispy_forms_tags %}
 
 {% block content %}
 <h1>{{ beer.name }}</h1>
@@ -9,10 +9,30 @@
 <div>
         <img style="height:200px;" src="{{ beer.image.url }}"></img>
     </div>
-{% endif %}    
+{% endif %}  
+
+{% if user.is_authenticated %}
 
 <a class='btn btn-success'>Add/edit beer details</a>
-<a class='btn btn-primary'>Leave Review</a>
+<a class='btn btn-primary'>Add Review</a>
+<a class='btn btn-secondary'>Add to my list</a>
+<div class='container'>
+<h1>Add Review</h1>
 
+  <form action="" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+   
+    {{ form|crispy }}
+    
+    <input class='btn btn-success' type="submit" value="Submit">
+  </form>
+  </div>
+{% endif %}
+
+{% for review in reviews %}
+<div>
+    {{review.notes}}
+</div>
+{% endfor%}
 
 {% endblock %}

@@ -40,9 +40,28 @@ def user_beer_list(request):
 class BeerListView(generic.ListView):
     model = Beer
   
-class BeerDetailView(generic.DetailView):
-    model = Beer 
+  
+  
+def beer_detail(request, pk):
+    beer = get_object_or_404(Beer, pk=pk)
+    reviews = beer.reviews.all()
     
+    if request.method == "POST":
+        form = ReviewCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            cd = form.cleaned_data
+            new_item = form.save(commit=False)
+            
+            #assign user to item
+            new_item.author = request.user
+            new_item.beer = beer
+            new_item.save()
+            messages.success(request, 'Review added successfully')
+            
+    else:
+        form = ReviewCreateForm()
+    return render(request, 'beer/beer_detail.html', 
+                    {'form':form, 'beer':beer, 'reviews': reviews})    
 
 
 
