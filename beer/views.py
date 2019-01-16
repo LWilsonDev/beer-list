@@ -81,3 +81,4 @@ def brewery_create(request):
         form = BreweryCreateForm(data=request.GET)
     return render(request, 'beer/brewery_form.html', 
                     {'form':form})   
+

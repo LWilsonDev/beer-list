@@ -49,6 +49,16 @@
     display: flex;
 }
 
+.asteriskField {
+    display: none;
+}
+
+
+
+
+
+
+
 .typewriter {
     display:inline-block; 
 }

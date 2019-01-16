@@ -9,6 +9,13 @@ class BreweryCreateForm(forms.ModelForm):
     class Meta:
         model = Brewery
         fields = ('name',)
+        widgets = {
+            'text': forms.TextInput(attrs={
+                'id': 'post-text', 
+                'required': True, 
+                'placeholder': 'Say something...'
+            })
+            }
 
 class BreweryDetailForm(forms.ModelForm):
     """Form to add detailed brewery info"""
