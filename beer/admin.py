@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Beer, Brewery, Review, Category
+from .models import Beer, Beerlist, Review
 
 class ReviewAdmin(admin.ModelAdmin):
     model = Review
@@ -8,7 +8,7 @@ class ReviewAdmin(admin.ModelAdmin):
     list_filter = ['beer', 'author']
     search_fields = ['beer']
 
-admin.site.register(Category)    
+    
+admin.site.register(Beerlist)
 admin.site.register(Beer)
-admin.site.register(Brewery)
 admin.site.register(Review, ReviewAdmin)

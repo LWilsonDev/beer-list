@@ -1,11 +1,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Review, Beer, Brewery, Category
+from .models import Review, Beer, Beerlist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.urls import reverse, reverse_lazy
 from django.views import generic
-from .forms import BeerCreateForm, BreweryCreateForm, BeerDetailForm, BreweryDetailForm, ReviewCreateForm
+from .forms import BeerCreateForm, ReviewCreateForm
 from django.contrib import messages
+
+from django.core.files.storage import FileSystemStorage
+
+
+
+
+
 
 def index(request):
     return render(request, 'index.html')
@@ -36,18 +43,13 @@ class BeerListView(generic.ListView):
 class BeerDetailView(generic.DetailView):
     model = Beer 
     
-class BreweryListView(generic.ListView):
-    model = Brewery    
-    
-class BreweryDetailView(generic.DetailView):
-    model = Brewery     
-    
+
 
 
 @login_required
 def beer_create(request):
     if request.method == "POST":
-        form = BeerCreateForm(data=request.POST)
+        form = BeerCreateForm(request.POST, request.FILES)
         if form.is_valid():
             cd = form.cleaned_data
             new_item = form.save(commit=False)
@@ -63,22 +65,5 @@ def beer_create(request):
     return render(request, 'beer/beer_form.html', 
                     {'form':form})    
                 
-@login_required
-def brewery_create(request):
-    if request.method == "POST":
-        form = BreweryCreateForm(data=request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            new_item = form.save(commit=False)
-            
-            #assign user to item
-            new_item.added_by = request.user
-            new_item.save()
-            messages.success(request, 'Brewery added successfully')
-            #redirect to new item detail view
-            return redirect(new_item.get_absolute_url())
-    else:
-        form = BreweryCreateForm(data=request.GET)
-    return render(request, 'beer/brewery_form.html', 
-                    {'form':form})   
+
 

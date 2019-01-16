@@ -8,40 +8,12 @@ from taggit.managers import TaggableManager
 import numpy as np
 
 
-class Category(models.Model):
-    
-    name = models.CharField(max_length=200, help_text='Enter a category (e.g. Ale)', blank=True)
-    
-    def __str__(self):
-        """String for representing the Model object."""
-        return self.name
-
-
-class Brewery(models.Model):
-    name = models.CharField(max_length=100)
-    country = models.CharField(max_length=50, blank=True)
-    region = models.CharField(max_length=50, blank=True)
-    town = models.CharField(max_length=50, blank=True)
-    image = models.URLField(blank=True)
-    founded_year = models.IntegerField(null=True, blank=True, help_text='e.g. 1998')
-    about = models.TextField(blank=True)
-    added_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='brewery_added_by',
-                            on_delete=models.CASCADE) 
-    added_date = models.DateTimeField(auto_now_add=True)
-    
-    def get_absolute_url(self):
-        """Returns the url to access a particular instance of a brewery."""
-        return reverse('brewery-detail', args=[str(self.id)])
-    
-    def __str__(self):
-        return self.name
-        
 class Beer(models.Model):
-    brewery = models.ForeignKey(Brewery, on_delete=models.CASCADE)
-    category = models.ManyToManyField(Category, help_text='Select a category for this beer', blank=True)
     name = models.CharField(max_length=100)
+    brewery = models.CharField(max_length=100)
+    country_of_origin = models.CharField(max_length=100)
     strength = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
-    image = models.URLField(blank=True)
+    image = models.ImageField(blank=True, upload_to='images')
     tags = TaggableManager(blank=True, help_text='eg. IPA, Golden, Craft')
     added_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='beer_added_by',
                             on_delete=models.CASCADE) 
@@ -55,9 +27,12 @@ class Beer(models.Model):
         """Returns the url to access a particular instance of a beer."""
         return reverse('beer-detail', args=[str(self.id)])
         
-    
     def __str__(self):
         return self.name
+        
+    class Meta: 
+        #order beers alphabetically, newest first
+        ordering = ('name', '-added_date')     
         
 class Review(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='beer_review',
@@ -74,6 +49,14 @@ class Review(models.Model):
     class Meta: 
         #order reviews alphabetically, newest first
         ordering = ('beer', '-created')  
+
+
+class Beerlist(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    list_beer = models.ManyToManyField(Beer, related_name='beer_added_to_list')
+    
+    def __str__(self):
+        return 'Beerlist for user {}'.format(self.user.username)
 
  
     
