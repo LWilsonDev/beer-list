@@ -18,6 +18,8 @@ class Beer(models.Model):
     added_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='beer_added_by',
                             on_delete=models.CASCADE) 
     added_date = models.DateTimeField(auto_now_add=True)
+    users_like = models.ManyToManyField(settings.AUTH_USER_MODEL, 
+                                        related_name='beers_liked', blank=True)
    
    #https://stackoverflow.com/questions/11255243/how-to-get-average-across-different-models-in-django
     def average_rating(self):
@@ -61,12 +63,7 @@ class Review(models.Model):
         ordering = ('beer', '-created')  
 
 
-class Beerlist(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    list_beer = models.ManyToManyField(Beer, related_name='beer_added_to_list')
-    
-    def __str__(self):
-        return 'Beerlist for user {}'.format(self.user.username)
+
 
  
     

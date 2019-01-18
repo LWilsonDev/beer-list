@@ -12,9 +12,7 @@
    <p>Average rating: {{beer.average_rating}}</p>
         <img style="height:200px;" src="{{ beer.image.url }}"></img>
     </div>
-    {% if user.is_authenticated %}
-    <a class="btn btn-secondary">Add to my list</a>
-    {% endif %}
+    
     <p class='tags'>
     Tags: 
     {% for tag in beer.tags.all %}

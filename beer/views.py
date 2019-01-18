@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Review, Beer, Beerlist
+from .models import Review, Beer
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.models import User
@@ -9,13 +9,9 @@ from .forms import BeerCreateForm, ReviewCreateForm
 from django.contrib import messages
 from taggit.models import Tag
 from django.db.models import Avg
-
-
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
 from django.core.files.storage import FileSystemStorage
-
-
-
-
 
 
 def index(request):
@@ -28,9 +24,15 @@ def homepage(request):
 def user_beer_list(request):
     
     user = request.user
-    user_beers = Review.objects.filter(author=user)
+    user_beers = Beerlist.objects.filter(user=user)
     
     return render(request, 'beer/user_beers.html', {'user_beers':user_beers})
+    
+def user_review_list(request):
+    user = request.user
+    user_reviews = Review.objects.filter(author=user)
+    
+    return render(request, 'beer/user_reviews.html', {'user_reviews':user_reviews})
     
 def beer_list(request, tag_slug=None):
     object_list = Beer.objects.all()
@@ -61,27 +63,13 @@ def beer_list(request, tag_slug=None):
                   {'page': page,
                    'beers': beers,
                    'tag': tag
-                       
                   })    
-    
-    #beers = Beer.objects.all().order_by('brewery', 'name')
-    #return render(request, 'beer/all_beers.html', {'beers':beers})
-    
-
-    
-#class BeerListView(generic.ListView):
- #  model = Beer
-  
   
   
 def beer_detail(request, pk):
     beer = get_object_or_404(Beer, pk=pk)
     reviews = beer.reviews.all()
-    
-    
-    
-    
-    
+   
     if request.method == "POST":
         form = ReviewCreateForm(request.POST, request.FILES)
         if form.is_valid():
@@ -98,7 +86,6 @@ def beer_detail(request, pk):
         form = ReviewCreateForm()
     return render(request, 'beer/beer_detail.html', 
                     {'form':form, 'beer':beer, 'reviews': reviews})    
-
 
 
 @login_required
@@ -120,5 +107,19 @@ def beer_create(request):
     return render(request, 'beer/beer_form.html', 
                     {'form':form})    
                 
-
-
+@login_required
+@require_POST
+def beer_like(request):
+    beer_id = request.POST.get('id')
+    action = request.POST.get('action')
+    if beer_id and action:
+        try:
+            beer = Beer.objects.get(id=beer_id)
+            if action == 'like':
+                beer.users_like.add(request.user)
+            else:
+                beer.users_like.remove(request.user)
+            return JsonResponse({'status':'ok'})    
+        except:
+            pass
+    return JsonResponse({'status':'ko'})    
