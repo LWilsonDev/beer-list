@@ -18,10 +18,20 @@ class Beer(models.Model):
     added_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='beer_added_by',
                             on_delete=models.CASCADE) 
     added_date = models.DateTimeField(auto_now_add=True)
-    # https://www.codementor.io/jadianes/get-started-with-django-building-recommendation-review-app-du107yb1a
+   
+   #https://stackoverflow.com/questions/11255243/how-to-get-average-across-different-models-in-django
     def average_rating(self):
-        all_ratings = map(lambda x: x.rating, self.review_set.all())
-        return np.mean(all_ratings)
+        
+        reviews = Review.objects.filter(beer=self)
+        if reviews:
+            count = len(reviews)
+            sum = 0
+            for rvw in reviews:
+                sum += rvw.rating
+            return (sum/count)
+        else:
+            return 'No ratings yet'
+        
         
     def get_absolute_url(self):
         """Returns the url to access a particular instance of a beer."""

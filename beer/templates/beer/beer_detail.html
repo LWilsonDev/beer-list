@@ -5,6 +5,9 @@
 <h2>{{ beer.brewery }}</h2>
 <p>Brewed in {{ beer.country_of_origin}}</p>
 <p>{{ beer.strength }}% ABV</p>
+{% if beer.average_rating %}
+<p>Average rating: {{beer.average_rating}}</p>
+{%endif%}
 {% if beer.image %}
 <div>
         <img style="height:200px;" src="{{ beer.image.url }}"></img>

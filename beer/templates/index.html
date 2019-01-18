@@ -1,9 +1,9 @@
-{% extends 'base.html' %} {% block title %}Beer List{% endblock %} {% block content %}
+{% extends 'base.html' %} {% block title %}Beer List{% endblock %} {% block content %}{% load static %}
 <div class="jumbotron jumbotron-fluid vertical-center index-jumbo">
     <div class="container text-center">
-        <div class='logo-container'>
-            <div class='logo'>
-            </div>
+        
+            <div class='log'>
+           <img style="height: 140px;" src="{% static 'images/logo.png' %}"></img>
         </div>
         <div class='typewriter'>
         <h1 class="logo-text">beer list.</h1>
