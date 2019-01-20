@@ -1,48 +1,94 @@
-{% extends 'base.html' %}{% load crispy_forms_tags %} {% block content %}
-<h1>{{ beer.name }}</h1>
-<h2>{{ beer.brewery }}</h2>
-<p>Brewed in {{ beer.country_of_origin}}</p>
-<p>{{ beer.strength }}% ABV</p>
-{% if beer.average_rating %}
-<p>Average rating: {{beer.average_rating}}</p>
-{%endif%} 
+{% extends 'base.html' %}{% load crispy_forms_tags %}{% load static %} {% block content %}
+<div class=container>
+  <div class='row'>
+    <div class='col-lg-7'>
+      <div class='beer-container'>
+        <div class='row'>
+          <div class='col-sm-6 text-center'>
+            {% if beer.image %}
+            <a href="{{ beer.get_absolute_url }}"><img src="{{beer.image.url}}" class="beer-img-sm" alt="..."></a> {% else %}
+            <a href="{{ beer.get_absolute_url }}"><img src="{% static 'images/logo.png' %}" class="beer-img-sm" alt="..."></a> {% endif %}
+          </div>
+          <div class='col-sm-6'>
+            <a class='link-header' href="{{ beer.get_absolute_url }}">
+              <h1 class="small-heading mt-2 mb-2">{{beer.name}}</h1>
+            </a>
+            <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
+            <p>{{beer.strength}}% ABV</p>
+            <p>Added by {{beer.added_by}}</p>
+            {% if beer.average_rating %}
+            <p>Average rating: {{beer.average_rating}}</p>
+            {%endif%}
+            <div class="mb-4">
+              {% if beer.tags %} {% for tag in beer.tags.all %}
+              <span class='tags'>
+                <a href="{% url 'beer_list_by_tag' tag.slug %}">{{ tag.name }}</a> 
+              </span> {% endfor %} {%endif%}
+            </div>
+          </div>
+        </div>
+        {% if user.is_authenticated %}
+        <div class='text-center'>
+          <a href="{% url 'beer_edit' pk=beer.id %}"class='btn btn-outline-secondary mr-2 ml-2'>Add/edit beer details</a>
 
-
-{% if beer.image %}
-<div>
-  <img style="height:200px;" src="{{ beer.image.url }}"></img>
-</div>
-{% endif %}
-
-{% with total_likes=beer.users_like.count users_like=beer.users_like.all %}
-    <div class="image-info">
-      <div>
-        <span class="count">
-         <span class="total">{{ total_likes }}</span>
-         like{{ total_likes|pluralize }}
-        </span>
-        <a href="#" data-id="{{ beer.id }}" data-action="{% if request.user in users_like %}un{% endif %}like" class="like button">
-          {% if request.user not in users_like %}
-            Like
-          {% else %}
-            Unlike
-          {% endif %}
-        </a>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn btn-secondary mr-2 ml-2" data-toggle="modal" data-target="#addReview">
+            Add Review
+          </button> {%endif%}
+        </div>
       </div>
-      
+      {% for review in reviews %}
+      <div class='review-container'>
+        <p class='review-info'>Reviewed by <a href=# class='review-header'>{{review.author}}</a> on {{review.created}}</p>
+        <p class='review-rating rated'>Rated: {{review.rating}}/5</p>
+        <hr>
+        <div class='row'>
+          {%if review.image%}
+          <div class='col-md-4 text-center'>
+            <img class="beer-img-review" src="{{review.image.url }}" alt="users beer picture"></img>
+          </div>
+          {%endif%}
+          {%if review.notes %}
+          <div {%if review.image%}class='col-md-8'{%else %}class='col'{%endif%}>
+            <p>{{review.notes}}</p>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor%} 
+      {% include "review_pagination.html" with page=reviews %}
     </div>
-    
-  {% endwith %}
+    <div class='col-lg-5'>
+      <div class='aside'>
+        <h2 class='subtitle'>similar beers:</h2>
+        {% for beer in similar_beers %}
+        <div class='container sm-beer-container'>
+          <div class='row'>
+            <div class='col-6 text-center'>
+              {% if beer.image %}
+              <a href="{{ beer.get_absolute_url }}"><img src="{{beer.image.url}}" class="beer-img-xsm" alt="beer picture"></a> {% else %}
+              <a href="{{ beer.get_absolute_url }}"><img src="{% static 'images/logo.png' %}" class="beer-img-xsm" alt="..."></a> {% endif %}
+            </div>
+            <div class='col-6'>
+              <a class='link-header' href="{{ beer.get_absolute_url }}">
+                <h3 class="small-heading mt-2 mb-2">{{beer.name}}</h3>
+              </a>
+              <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
+              <p>{{beer.strength}}% ABV</p>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p class='text-orange'>There are no similar beers yet</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+</div>
 
-{% if user.is_authenticated %}
-<a class='btn btn-success'>Add/edit beer details</a> 
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addReview">
-  Add Review
-</button>
-
-<!-- Modal -->
+<!-- Modal for Add Review Form -->
 <div class="modal fade" id="addReview" tabindex="-1" role="dialog" aria-labelledby="addReview" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -55,13 +101,6 @@
       <div class="modal-body">
         <form action="" method="post" enctype="multipart/form-data">
           {% csrf_token %} {{ form|crispy }}
-
-          
-        
-
-
-
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -72,36 +111,5 @@
   </div>
 </div>
 
-{% endif %} 
 
-{% for review in reviews %}
-<div>
-  {{review.notes}}
-</div>
-{% endfor%} {% endblock %}
-{% block domready %}
-  $('a.like').click(function(e){
-    e.preventDefault();
-    $.post('{% url "like" %}',
-      {
-        id: $(this).data('id'),
-        action: $(this).data('action')
-      },
-      function(data){
-        if (data['status'] == 'ok')
-        {
-          var previous_action = $('a.like').data('action');
-
-          // toggle data-action
-          $('a.like').data('action', previous_action == 'like' ? 'unlike' : 'like');
-          // toggle link text
-          $('a.like').text(previous_action == 'like' ? 'Unlike' : 'Like');
-
-          // update total likes
-          var previous_likes = parseInt($('span.count .total').text());
-          $('span.count .total').text(previous_action == 'like' ? previous_likes + 1 : previous_likes - 1);
-        }
-      }
-    );
-  });
 {% endblock %}

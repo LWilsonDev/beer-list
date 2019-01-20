@@ -12,7 +12,7 @@ class Beer(models.Model):
     name = models.CharField(max_length=100)
     brewery = models.CharField(max_length=100)
     country_of_origin = models.CharField(max_length=100)
-    strength = models.DecimalField(max_digits=4, decimal_places=1, blank=True, null=True)
+    strength = models.DecimalField(max_digits=4, decimal_places=1)
     image = models.ImageField(blank=True, upload_to='images')
     tags = TaggableManager(blank=True, help_text='eg. IPA, Golden, Craft')
     added_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='beer_added_by',
@@ -30,9 +30,16 @@ class Beer(models.Model):
             sum = 0
             for rvw in reviews:
                 sum += rvw.rating
-            return (sum/count)
+            return round((sum/count),1)
         else:
             return 'No ratings yet'
+    
+    def save(self, *args, **kwargs):
+        for field_name in ['name', 'brewery', 'country_of_origin']:
+            val = getattr(self, field_name, False)
+            if val:
+                setattr(self, field_name, val.title())
+        super(Beer, self).save(*args, **kwargs)        
         
         
     def get_absolute_url(self):

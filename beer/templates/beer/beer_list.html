@@ -1,29 +1,53 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %}{% load static %}
 {% block content %}
-<h1>All Beers</h1>
-{% if tag %}
-<h2>Posts tagged with "{{tag.name}}"</h2>
+
+
+<div class='container'>
+    {% if tag %}
+<h1 class='subtitle mt-4'>Beers tagged with "{{tag.name}}"</h1>
+{% else %}
+<h1 class='subtitle mt-4'>All Beers</h1>
 {% endif %}
-{% for beer in beers %}
-<div>
-    <h2><a href="{{ beer.get_absolute_url }}">{{ beer.name }}</a></h2>
-    <h3>{{ beer.brewery }}</h3>
-    <p>{{ beer.strength }}</p>
-   <p>Average rating: {{beer.average_rating}}</p>
-        <img style="height:200px;" src="{{ beer.image.url }}"></img>
+    <div class='row'>
+        {% for beer in beers %}
+        <div class='col-sm-12 col-md-6 col-lg-3'>
+            <div class='beer-container'>
+                <div class='row'>
+                    <div class='col-sm-6 col-lg-12 text-center'>
+                        {% if beer.image %}
+                        <a href="{{ beer.get_absolute_url }}"><img src="{{beer.image.url}}" class="beer-img-sm" alt="..."></a>
+                        {% else %}
+                        <a href="{{ beer.get_absolute_url }}"><img src="{% static 'images/logo.png' %}" class="beer-img-sm" alt="..."></a>
+                        {% endif %}
+                    </div>
+                    <div class='col-sm-6 col-lg-12'>
+                        
+                        <a class='link-header' href="{{ beer.get_absolute_url }}"><h3 class="small-heading mt-2 mb-2">{{beer.name}}</h3></a>
+                    
+                    <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
+                    <p>{{beer.strength}}% ABV</p>
+                    <p>Added by {{beer.added_by}}</p>
+                    
+                    <div class="">
+                    {% if beer.tags %}
+                    {% for tag in beer.tags.all %}
+                    <span class='tags'>
+                        <a href="{% url 'beer_list_by_tag' tag.slug %}">{{ tag.name }}</a> 
+                    </span>
+                     {% endfor %}
+                    {%endif%}
+                </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        {%endfor %}
+
+
     </div>
-    
-    <p class='tags'>
-    Tags: 
-    {% for tag in beer.tags.all %}
-    <a href="{% url 'beer_list_by_tag' tag.slug %}">{{ tag.name }}</a>
-    {% if not forloop.last %}, {% endif %}
-   {% endfor %}
-</p>
+    {% include "pagination.html" with page=beers %}
 </div>
 
-<hr>
-
-{% endfor %}
-{% include "pagination.html" with page=beers %}
 {% endblock %}

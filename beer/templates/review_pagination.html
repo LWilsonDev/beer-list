@@ -1,0 +1,11 @@
+<div class='pagination text-orange'>
+    <span class='step-links'>
+        {% if page.has_previous %}
+        <a class='tags' href="?page={{ page.previous_page_number }}">Previous</a>
+        {% endif %}
+        
+        {% if page.has_next %}
+        <a class='tags' href="?page={{ page.next_page_number }}">See more reviews</a>
+        {% endif %}
+    </span>
+</div>

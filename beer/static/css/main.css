@@ -1,5 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Dancing+Script');
 @import url('https://fonts.googleapis.com/css?family=Special+Elite');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700');
+body {
+     background-color: #36393e;
+     font-family: 'Open Sans Condensed', sans-serif;
+
+}
 
 .logo {
     height: 140px;
@@ -13,17 +18,45 @@
 .logo-text {
     font-family: 'Special Elite', cursive;
     padding-top: 10px;
-    font-size: 3em;
-    
+    font-size: 2em;
 }
 .logo-container {
     
     text-align: center;
     margin: 0 auto;
 }
+.subtitle {
+    font-family: 'Special Elite', cursive;
+    margin-bottom: 40px;
+    font-size: 1.8em;
+    color: white;
+    letter-spacing: 2px;
+}
+.small-heading {
+    
+    font-size: 1.5em;
+    font-weight: bold;
+}
+.link-header {
+    color: #343a40;
+}
+.link-header:active, .link-header:hover{
+    color: orange;
+    text-decoration: none;
+}
+
+.brewery-text {
+    font-size: 1.3em;
+}
 
 .my-nav {
     background-color: #36393e;
+
+}
+
+.main-search {
+    max-width: 70%;
+    margin: 40px auto;
 
 }
 .vertical-center {
@@ -40,17 +73,117 @@
     height:200px;
 }
 
+.list-img {
+    max-height: 140px;
+    
+}
+
 .index-jumbo {
     background-color: #36393e;
     color: #f8f5ee;
+    max-height: 60vh;
+}
+.beer-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    margin-right:auto;
+    margin-left:auto;
+    max-width: 95%;
+}
+
+.sm-beer-container{
+    background-color: white;
+    display: inline-block;
+    border-radius: 10px;
+    margin: 20px;
+    max-width: 80%;
+}
+
+.form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 40px auto;
+    max-width:90%;
+}
+
+.review-container {
+    background-color: #aeb0b3;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+
+.beer-img-sm {
+    height:140px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.beer-img-xsm {
+    height:80px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.beer-img-review {
+    max-width: 90%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.text-orange {
+    color: orange;
+}
+.review-info{
+    display: inline;
+}
+.review-rating{
+   float: right;
+    
+}
+.aside {
+    
+    display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.tags {
+    background-color: orange;
+    font-family: 'Special Elite', cursive;
+    margin-right: 3px;
+    margin-left: 3px;
+    padding:6px;
+    font-size: 0.8em;
+    border-radius: 2px;
+    -webkit-box-shadow: -2px 2px 8px 0px rgba(0,0,0,0.75);
+-moz-box-shadow: -2px 2px 8px 0px rgba(0,0,0,0.75);
+box-shadow: -2px 2px 8px 0px rgba(0,0,0,0.75);
+
+}
+.tags a {
+    color: #36393e;
+}
+
+.rated {
+    background-color: #36393e;
+    color: orange;
+    font-family: 'Special Elite', cursive;
+    margin-right: 3px;
+    margin-left: 3px;
+    padding:6px;
+    font-size: 0.8em;
+}
+
+.likes {
+    display: inline;
+    color: white;
 }
 
 .display-flex{
     display: flex;
-}
-
-.asteriskField {
-    display: none;
 }
 
 
@@ -61,6 +194,7 @@
 
 .typewriter {
     display:inline-block; 
+    margin-top: 40px;
 }
 
 /* https://css-tricks.com/snippets/css/typewriter-effect/ */
@@ -71,9 +205,9 @@
   border-right: .15em solid orange; /* The typwriter cursor */
   white-space: nowrap; /* Keeps the content on a single line */
   margin: 0 auto; /* Gives that scrolling effect as the typing happens */
-  letter-spacing: .15em; /* Adjust as needed */
+  letter-spacing: .1em; /* Adjust as needed */
   animation: 
-    typing 3s steps(30, end),
+    typing 2s steps(30, end),
     blink-caret .5s step-end 15;
     
 }
@@ -88,4 +222,34 @@
 @keyframes blink-caret {
   from, to { border-color: transparent }
   50% { border-color: orange }
+}
+
+@media(min-width:768px) {
+    .form-container {
+        max-width: 80%;
+    }
+    .logo-text {
+        font-size: 3em;
+    }
+    .main-search{
+        max-width: 300px;
+    }
+}
+
+
+
+@media(min-width:992px) {
+    .aside {
+    
+    display: flex;
+  align-items: center;
+  flex-direction: column;
+    }
+
+    .form-container {
+        max-width: 60%;
+        
+    }    
+
+
 }

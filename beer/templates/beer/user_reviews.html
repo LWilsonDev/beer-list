@@ -3,7 +3,7 @@
 <h1>My Reviews</h1>
 {% for review in user_reviews %}
 <div>
-    <h2>{{ review.beer.name }}</h2>
+    <h2>{{ review.name }}</h2>
     <a href=#>{{ review.beer.brewery }}</a>
     <p>{{ review.rating }}</p>
     <p>{{ review.notes }}</p>

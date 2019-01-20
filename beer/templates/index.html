@@ -1,15 +1,62 @@
 {% extends 'base.html' %} {% block title %}Beer List{% endblock %} {% block content %}{% load static %}
 <div class="jumbotron jumbotron-fluid vertical-center index-jumbo">
     <div class="container text-center">
-        
-            <div class='log'>
-           <img style="height: 140px;" src="{% static 'images/logo.png' %}"></img>
+
+        <div class=''>
+            <img style="height: 140px;" src="{% static 'images/logo.png' %}"></img>
         </div>
         <div class='typewriter'>
-        <h1 class="logo-text">beer list.</h1>
+            <h1 class="logo-text">the beer list.</h1>
         </div>
+        <div class="main-search input-group mb-3">
+            <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-secondary" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class='container'>
+    <h2 class='subtitle'>recently added:</h2>
+    <div class='row'>
+        {% for beer in recent_beers %}
+        <div class='col-sm-12 col-md-6 col-lg-3'>
+            <div class='beer-container'>
+                <div class='row'>
+                    <div class='col-sm-6 col-lg-12 text-center'>
+                        {% if beer.image %}
+                        <a href="{{ beer.get_absolute_url }}"><img src="{{beer.image.url}}" class="beer-img-sm" alt="..."></a>
+                        {% else %}
+                        <a href="{{ beer.get_absolute_url }}"><img src="{% static 'images/logo.png' %}" class="beer-img-sm" alt="..."></a>
+                        {% endif %}
+                    </div>
+                    <div class='col-sm-6 col-lg-12'>
+                        
+                        <a class='link-header' href="{{ beer.get_absolute_url }}"><h3 class="small-heading mt-2 mb-2">{{beer.name}}</h3></a>
+                    
+                    <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
+                    <p>{{beer.strength}}% ABV</p>
+                    <p>Added by {{beer.added_by}}</p>
+                    
+                    <div class="">
+                    {% if beer.tags %}
+                    {% for tag in beer.tags.all %}
+                    <span class='tags'>
+                        <a href="{% url 'beer_list_by_tag' tag.slug %}">{{ tag.name }}</a> 
+                    </span>
+                     {% endfor %}
+                    {%endif%}
+                </div>
+                    </div>
+                </div>
+                
+
+            </div>
+        </div>
+        {%endfor %}
 
 
     </div>
 </div>
+
 {% endblock %}
