@@ -32,6 +32,14 @@ body {
     color: white;
     letter-spacing: 2px;
 }
+
+.login {
+    color: #36393e;
+}
+.login-form {
+    max-width: 80%;
+    margin: 40px auto;
+}
 .small-heading {
     
     font-size: 1.5em;
@@ -234,6 +242,9 @@ box-shadow: -2px 2px 8px 0px rgba(0,0,0,0.75);
     .main-search{
         max-width: 300px;
     }
+    .login-form {
+    max-width: 60%;
+}
 }
 
 
@@ -251,5 +262,7 @@ box-shadow: -2px 2px 8px 0px rgba(0,0,0,0.75);
         
     }    
 
-
+    .login-form {
+        max-width: 50%;
+    }
 }

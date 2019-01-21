@@ -32,7 +32,6 @@ ALLOWED_HOSTS = ['beer-list-lwilson.c9users.io']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
@@ -43,6 +42,7 @@ INSTALLED_APPS = [
     'taggit',
     'crispy_forms',
     'bootstrap_modal_forms',
+    'django.contrib.auth',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -135,9 +135,15 @@ STATICFILES_DIRS = (
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
-LOGIN_REDIRECT_URL = '/homepage'
+LOGIN_REDIRECT_URL = 'beer/index'
 
+TAGGIT_CASE_INSENSITIVE = True    
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'beer/media')
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'accounts.authentication.EmailAuthBackend',
+    ]

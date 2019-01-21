@@ -21,17 +21,8 @@ def index(request):
     
     return render(request, 'index.html', {'recent_beers':recent_beers})
     
-@login_required
-def homepage(request):
-    return render(request, 'beer/homepage.html')
     
-#def user_beer_list(request):
-#    
-#    user = request.user
-#    user_beers = Beerlist.objects.filter(user=user)
-#    
-#    return render(request, 'beer/user_beers.html', {'user_beers':user_beers})
-    
+
 def user_review_list(request):
     user = request.user
     beer_user_has_reviewed = Beer.objects.filter(reviews__author=user)
