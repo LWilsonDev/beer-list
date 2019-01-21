@@ -37,6 +37,11 @@
           </button> {%endif%}
         </div>
       </div>
+       
+      <div id="like-section">
+        {% include 'beer/like_section.html' %}
+      </div>
+      
       {% for review in reviews %}
       <div class='review-container'>
         <p class='review-info'>Reviewed by <a href=# class='review-header'>{{review.author}}</a> on {{review.created}}</p>

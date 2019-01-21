@@ -18,8 +18,8 @@ class Beer(models.Model):
     added_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='beer_added_by',
                             on_delete=models.CASCADE) 
     added_date = models.DateTimeField(auto_now_add=True)
-    users_like = models.ManyToManyField(settings.AUTH_USER_MODEL, 
-                                        related_name='beers_liked', blank=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, 
+                                        related_name='likeds', blank=True)
    
    #https://stackoverflow.com/questions/11255243/how-to-get-average-across-different-models-in-django
     def average_rating(self):
@@ -33,6 +33,9 @@ class Beer(models.Model):
             return round((sum/count),1)
         else:
             return 'No ratings yet'
+            
+    def total_likes(self):
+        return self.likes.count()
     
     def save(self, *args, **kwargs):
         for field_name in ['name', 'brewery', 'country_of_origin']:
@@ -70,7 +73,4 @@ class Review(models.Model):
         ordering = ('beer', '-created')  
 
 
-
-
- 
     

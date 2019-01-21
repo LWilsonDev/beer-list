@@ -9,11 +9,12 @@ from .forms import BeerCreateForm, ReviewCreateForm
 from django.contrib import messages
 from taggit.models import Tag
 from django.db.models import Avg
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from django.views.decorators.http import require_POST
 from django.core.files.storage import FileSystemStorage
 from django.db.models import Count
 from django.views.generic import UpdateView
+from django.template.loader import render_to_string
 
 
 def index(request):
@@ -59,6 +60,9 @@ def beer_list(request, tag_slug=None):
   
 def beer_detail(request, pk):
     beer = get_object_or_404(Beer, pk=pk)
+    is_liked = False
+    if beer.likes.filter(id=request.user.id).exists():
+        is_liked=True
     review_list = beer.reviews.all()
     
     paginator = Paginator(review_list, 4) # 4 reviews each page
@@ -90,9 +94,18 @@ def beer_detail(request, pk):
     # get similar beers 
     beer_tags_ids = beer.tags.values_list('id', flat=True)
     similar_beers = Beer.objects.filter(tags__in=beer_tags_ids).exclude(id=beer.id)
-    similar_beers = similar_beers.annotate(same_tags=Count('tags')).order_by('-same_tags', '-added_date')[:3]    
+    similar_beers = similar_beers.annotate(same_tags=Count('tags')).order_by('-same_tags', '-added_date')[:3]
+    context = {
+        'form':form, 
+        'beer':beer, 
+        'reviews': reviews, 
+        'page':page, 
+        'similar_beers': similar_beers,
+        'is_liked':is_liked,
+    
+    }
     return render(request, 'beer/beer_detail.html', 
-                    {'form':form, 'beer':beer, 'reviews': reviews, 'page':page, 'similar_beers': similar_beers})    
+                    context)    
 
 
 @login_required
@@ -129,6 +142,24 @@ def beer_edit(request, pk):
     else:
         form = BeerCreateForm(instance=beer)
     return render(request, 'beer/beer_form.html', {'form':form, 'beer':beer})    
-   
-   
-                
+
+@login_required   
+def like_beer(request):
+    #beer = get_object_or_404(Beer, id=request.POST.get('beer_id'))
+    beer = get_object_or_404(Beer, id=request.POST.get('id'))
+    is_liked = False
+    if beer.likes.filter(id=request.user.id).exists():
+        beer.likes.remove(request.user)
+        is_liked = False
+    else:    
+        beer.likes.add(request.user)
+        is_liked = True
+    context = {
+        'beer':beer,
+        'is_liked':is_liked,
+    }
+    if request.is_ajax():
+        #django recommends using render_to_string to cut down repetative loading and rendering of templates
+        html = render_to_string('beer/like_section.html', context, request=request)
+        return JsonResponse({'form':html})
+    
