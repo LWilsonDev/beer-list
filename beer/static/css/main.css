@@ -191,6 +191,10 @@ body {
     color: #36393e;
 }
 
+.review-header {
+    display: inline-block;
+}
+
 .like-btn {
     background-color: transparent;
     border: none;

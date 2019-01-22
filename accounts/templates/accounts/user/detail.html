@@ -1,56 +1,64 @@
-{% extends 'base.html' %}{% load static %}
-{% block content %}
-<div class='container'>
-    
-<h1 class='subtitle mt-4'>{{user.username}}'s profile</h1>
-
-{% for review in user_reviews%}
-<p>{{review.beer}}</p>
-{%endfor%}
-
-<h2 class='subtitle mt-4'>{{user.username}} likes:</h2>
-    <div class='row'>
-        {% for beer in beers %}
-        <div class='col-sm-12 col-md-6 col-lg-3'>
-            <div class='beer-container'>
-                <div class='row'>
-                    <div class='col-sm-6 col-lg-12 text-center'>
-                        {% if beer.image %}
-                        <a href="{{ beer.get_absolute_url }}"><img src="{{beer.image.url}}" class="beer-img-sm" alt="..."></a>
-                        {% else %}
-                        <a href="{{ beer.get_absolute_url }}"><img src="{% static 'images/logo.png' %}" class="beer-img-sm" alt="..."></a>
-                        {% endif %}
-                    </div>
-                    <div class='col-sm-6 col-lg-12'>
-                        
-                        <a class='link-header' href="{{ beer.get_absolute_url }}"><h3 class="small-heading mt-2 mb-2">{{beer.name}}</h3></a>
-                    
-                    <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
-                    <p>{{beer.strength}}% ABV</p>
-                    <p>Added by {{beer.added_by}}</p>
-                    
-                    <div class="">
-                    {% if beer.tags %}
-                    {% for tag in beer.tags.all %}
-                    <span class='tags'>
-                        <a href="{% url 'beer_list_by_tag' tag.slug %}">{{ tag.name }}</a> 
-                    </span>
-                     {% endfor %}
-                    {%endif%}
-                    
-                    
-                </div>
-                    </div>
-                </div>
-                
-
-            </div>
+{% extends 'base.html' %}{% load static %} {% block content %}
+<div class=container>
+  <div class='row'>
+    <div class='col-lg-7'>
+      <h1 class='subtitle'>{{user.username}}'s reviews</h1>
+      {% for review in user_reviews %}
+      <div class='review-container'>
+        <a class='link-header review-header' href="{{ review.beer.get_absolute_url }}">
+          <h3 class="small-heading  review-header mb-2">{{review.beer}}</h3>
+        </a>
+        <p class='review-rating rated'>Rated: {{review.rating}}/5</p>
+        <h4 class='brewery-text'>{{review.beer.brewery}}, {{review.beer.country_of_origin}} </h4>
+        <p class='review-info'>{{review.created}}</p>
+        
+        <hr>
+        <div class='row'>
+          {%if review.image%}
+          <div class='col-md-4 text-center'>
+            <img class="beer-img-review" src="{{review.image.url }}" alt="users beer picture"></img>
+          </div>
+          {%endif%} {%if review.notes %}
+          <div {%if review.image%}class='col-md-8' {%else %}class='col' {%endif%}>
+            <p>{{review.notes}}</p>
+          </div>
+          {% endif %}
         </div>
-        {%endfor %}
-
-
+      </div>
+      {% endfor%} {% include "review_pagination.html" with page=reviews %}
     </div>
-    {% include "pagination.html" with page=beers %}
+    <div class='col-lg-5'>
+      <div class='aside'>
+        <h2 class='subtitle'>{{user.username}} likes</h2>
+        {% for beer in beers %}
+        <div class='container sm-beer-container'>
+          <div class='row'>
+            <div class='col-6 text-center'>
+              {% if beer.image %}
+              <a href="{{ beer.get_absolute_url }}"><img src="{{beer.image.url}}" class="beer-img-xsm" alt="beer picture"></a> {% else %}
+              <a href="{{ beer.get_absolute_url }}"><img src="{% static 'images/logo.png' %}" class="beer-img-xsm" alt="..."></a> {% endif %}
+            </div>
+            <div class='col-6'>
+              <a class='link-header' href="{{ beer.get_absolute_url }}">
+                <h3 class="small-heading mt-2 mb-2">{{beer.name}}</h3>
+              </a>
+              <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
+              <p>{{beer.strength}}% ABV</p>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <p class='text-orange'>{{user.username}} hasn't liked any beers yet:(</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 </div>
+</div>
+
+
+
+
+
 
 {% endblock %}

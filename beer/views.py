@@ -73,9 +73,7 @@ def user_profile(request, username):
     
 def beer_list(request, tag_slug=None):
     object_list = Beer.objects.all()
-    
     tag = None
-    
     if tag_slug:
         tag = get_object_or_404(Tag, slug=tag_slug)
         object_list = object_list.filter(tags__in=[tag])

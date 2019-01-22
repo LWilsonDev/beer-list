@@ -48,7 +48,7 @@
       
       {% for review in reviews %}
       <div class='review-container'>
-        <p class='review-info'>Reviewed by <a href=# class='review-header'>{{review.author}}</a> on {{review.created}}</p>
+        <p class='review-info'>Reviewed by <a href="{{ review.author.get_absolute_url }}" class='review-header'>{{review.author}}</a> on {{review.created}}</p>
         <p class='review-rating rated'>Rated: {{review.rating}}/5</p>
         <hr>
         <div class='row'>
