@@ -151,5 +151,5 @@ AUTHENTICATION_BACKENDS = [
     
 #specify URL for user model
 ABSOLUTE_URL_OVERRIDES = {
-    'auth.user': lambda u: reverse_lazy('user_detail', args=[u.username])
+    'auth.user': lambda u: reverse_lazy('user_profile', args=[u.username])
 }

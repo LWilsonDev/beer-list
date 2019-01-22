@@ -23,10 +23,11 @@ def index(request):
     return render(request, 'index.html', {'recent_beers':recent_beers})
     
 
-@login_required    
-def user_likes(request):
-    user=request.user
+@login_required 
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username, is_active=True)
     object_list = user.likes.all()
+    user_reviews = Review.objects.filter(author=user)
     #user_review = object_list.filter(reviews__author=user)
     paginator = Paginator(object_list, 4) # 4 posts in each page
     page = request.GET.get('page')
@@ -39,12 +40,36 @@ def user_likes(request):
         # If page is out of range deliver last page of results
         beers = paginator.page(paginator.num_pages)
     context = {
+        'user':user,
         'beers': beers, 
         'page':page, 
-        #'user_review':user_review
+        'user_reviews':user_reviews
     }    
+   
+    return render(request, 'accounts/user/detail.html', context)
+
+
+#def user_likes(request):
+#    user=request.user
+#    object_list = user.likes.all()
+#    #user_review = object_list.filter(reviews__author=user)
+#    paginator = Paginator(object_list, 4) # 4 posts in each page
+#    page = request.GET.get('page')
+#    try:
+#        beers = paginator.page(page)
+#    except PageNotAnInteger:
+#        # If page is not an integer deliver the first page
+#        beers = paginator.page(1)
+#    except EmptyPage:
+#        # If page is out of range deliver last page of results
+#        beers = paginator.page(paginator.num_pages)
+#    context = {
+#        'beers': beers, 
+#        'page':page, 
+#        #'user_review':user_review
+#    }    
     
-    return render(request, 'beer/user_likes.html', context)
+#    return render(request, 'beer/user_likes.html', context)
     
 def beer_list(request, tag_slug=None):
     object_list = Beer.objects.all()
@@ -103,7 +128,7 @@ def beer_detail(request, pk):
             new_item.beer = beer
             new_item.save()
             messages.success(request, 'Review added successfully')
-            
+            return redirect(beer.get_absolute_url())
     else:
         form = ReviewCreateForm()
         
