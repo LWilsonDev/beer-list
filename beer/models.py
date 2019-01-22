@@ -19,7 +19,7 @@ class Beer(models.Model):
                             on_delete=models.CASCADE) 
     added_date = models.DateTimeField(auto_now_add=True)
     likes = models.ManyToManyField(settings.AUTH_USER_MODEL, 
-                                        related_name='likeds', blank=True)
+                                        related_name='likes', blank=True)
    
    #https://stackoverflow.com/questions/11255243/how-to-get-average-across-different-models-in-django
     def average_rating(self):

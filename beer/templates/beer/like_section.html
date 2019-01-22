@@ -1,13 +1,13 @@
 {% if user.is_authenticated %}
       <form action="{% url 'like_beer' %}" method='post'>
         {% csrf_token %}
-        
+        <p class='like-section-text'>{{beer.total_likes}} like{{beer.total_likes|pluralize}}</p>
         {% if is_liked %}
-        <button type='submit' id='like' name='beer_id' value="{{beer.id}}" class="btn btn-danger">Dislike</button>
+        <button type='submit' id='like' name='beer_id' value="{{beer.id}}" class="like-btn"><i class="fas fa-thumbs-up like-icon"></i></button>
         {% else %}
-        <button type='submit' id='like' name='beer_id' value="{{beer.id}}" class="btn btn-success">Like</button>
+        <button type='submit' id='like' name='beer_id' value="{{beer.id}}" class="like-btn"><i class="far fa-thumbs-up like-icon"></i></button>
         {%endif%}
         
       </form>
       {% endif%}
-      <p class='text-orange'>{{beer.total_likes}} like{{beer.total_likes|pluralize}}</p>
+      

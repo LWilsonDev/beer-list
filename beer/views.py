@@ -24,11 +24,34 @@ def index(request):
     
     
 
-def user_review_list(request):
-    user = request.user
+def user_review_list(request, pk):
+    
     beer_user_has_reviewed = Beer.objects.filter(reviews__author=user)
     
     return render(request, 'beer/user_reviews.html', {'user_reviews':beer_user_has_reviewed})
+
+@login_required    
+def user_likes(request):
+    user=request.user
+    object_list = user.likes.all()
+    #user_review = object_list.filter(reviews__author=user)
+    paginator = Paginator(object_list, 4) # 4 posts in each page
+    page = request.GET.get('page')
+    try:
+        beers = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        beers = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        beers = paginator.page(paginator.num_pages)
+    context = {
+        'beers': beers, 
+        'page':page, 
+        #'user_review':user_review
+    }    
+    
+    return render(request, 'beer/user_likes.html', context)
     
 def beer_list(request, tag_slug=None):
     object_list = Beer.objects.all()
@@ -145,7 +168,6 @@ def beer_edit(request, pk):
 
 @login_required   
 def like_beer(request):
-    #beer = get_object_or_404(Beer, id=request.POST.get('beer_id'))
     beer = get_object_or_404(Beer, id=request.POST.get('id'))
     is_liked = False
     if beer.likes.filter(id=request.user.id).exists():

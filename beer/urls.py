@@ -14,6 +14,7 @@ urlpatterns = [
     path('add_beer/', views.beer_create, name='beer_create'),
     path('edit_beer/<int:pk>', views.beer_edit, name='beer_edit'),
     path('like', views.like_beer, name='like_beer'),
+    path('likes/', views.user_likes, name='user_likes'),
     
    
     

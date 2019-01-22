@@ -175,6 +175,26 @@ box-shadow: -2px 2px 8px 0px rgba(0,0,0,0.75);
     color: #36393e;
 }
 
+.like-btn {
+    background-color: transparent;
+    border: none;
+}
+.like-btn:focus {
+    outline: none;
+}
+.like-icon {
+    color: #36393e;
+    font-size: 1.3em;
+}
+.like-section{
+    display: inline-block;
+}
+.like-section-text{
+    display: inline-block;
+    font-size: 1.3em;
+    margin-bottom: 0;
+}
+
 .rated {
     background-color: #36393e;
     color: orange;

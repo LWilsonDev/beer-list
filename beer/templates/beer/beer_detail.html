@@ -13,6 +13,7 @@
             <a class='link-header' href="{{ beer.get_absolute_url }}">
               <h1 class="small-heading mt-2 mb-2">{{beer.name}}</h1>
             </a>
+            
             <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
             <p>{{beer.strength}}% ABV</p>
             <p>Added by {{beer.added_by}}</p>
@@ -29,6 +30,9 @@
         </div>
         {% if user.is_authenticated %}
         <div class='text-center'>
+          <div id="like-section" class='like-section'>
+        {% include 'beer/like_section.html' %}
+      </div>
           <a href="{% url 'beer_edit' pk=beer.id %}"class='btn btn-outline-secondary mr-2 ml-2'>Add/edit beer details</a>
 
           <!-- Button trigger modal -->
@@ -36,11 +40,11 @@
             Add Review
           </button> {%endif%}
         </div>
+        
       </div>
+      
        
-      <div id="like-section">
-        {% include 'beer/like_section.html' %}
-      </div>
+      
       
       {% for review in reviews %}
       <div class='review-container'>
