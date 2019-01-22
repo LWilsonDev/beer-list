@@ -7,7 +7,6 @@ from django.conf.urls import url
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('my_reviews', views.user_review_list, name='user_review_list'),
     path('beers/', views.beer_list, name='beer_list'),
     path('beers/tag/<slug:tag_slug>/', views.beer_list, name='beer_list_by_tag'),
     path('beer/<int:pk>', views.beer_detail, name='beer-detail'),

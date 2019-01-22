@@ -37,6 +37,7 @@ class Beer(models.Model):
     def total_likes(self):
         return self.likes.count()
     
+    # add to save function to capitalize 'name', 'brewery', 'country'
     def save(self, *args, **kwargs):
         for field_name in ['name', 'brewery', 'country_of_origin']:
             val = getattr(self, field_name, False)
@@ -72,5 +73,7 @@ class Review(models.Model):
         #order reviews alphabetically, newest first
         ordering = ('beer', '-created')  
 
-
+    def get_absolute_url(self):
+        """Returns the url to access a particular reviews."""
+        return reverse('reviews', args=[str(self.id)])
     

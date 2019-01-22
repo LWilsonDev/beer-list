@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>My Reviews</h1>
-{% for review in user_reviews %}
+<h1>User Reviews</h1>
+{% for review in object_list %}
 <div>
-    <h2>{{ review.name }}</h2>
+    <h2>{{ review.author }}</h2>
    
 </div>
 

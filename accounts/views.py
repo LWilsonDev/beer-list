@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages, auth
-from .forms import UserLoginForm, UserRegistrationForm
+from .forms import UserLoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from .models import Profile
 
 
 @login_required
@@ -52,6 +53,8 @@ def register(request):
             if user:
                 auth.login(user=user, request=request)
                 messages.success(request, "You have successfully registered")
+                #create blank profile for new user
+                Profile.objects.create(user=user)
                 return redirect(reverse('index'))
             else:
                 messages.error(request, "Unable to register your account at this time")
@@ -60,4 +63,29 @@ def register(request):
     return render(request, 'accounts/registration.html', {
         "registration_form": registration_form})
   
-
+@login_required
+def user_list(request):
+    users = User.objects.filter(is_active=True)
+    return render(request, 'accounts/user/list.html', {'users':users})
+    
+@login_required
+def user_detail(request, username):
+    user = get_object_or_404(User, username=username, is_active=True)
+    return render(request, 'accounts/user/detail.html', {'user':user})
+    
+@login_required
+def edit(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(instance=request.user,
+                                    data = request.POST)
+        profile_form = ProfileEditForm(instance=request.user.profile,
+                                        data=request.POST,
+                                        files=request.FILES)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+    else:
+        user_form = UserEditForm(instance=request.user)
+        profile_form = ProfileEditForm(instance=request.user.profile)
+    
+    return render(request, 'accounts/edit.html', {'user_form': user_form, 'profile_form': profile_form})    

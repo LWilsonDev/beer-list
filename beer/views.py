@@ -22,13 +22,6 @@ def index(request):
     
     return render(request, 'index.html', {'recent_beers':recent_beers})
     
-    
-
-def user_review_list(request, pk):
-    
-    beer_user_has_reviewed = Beer.objects.filter(reviews__author=user)
-    
-    return render(request, 'beer/user_reviews.html', {'user_reviews':beer_user_has_reviewed})
 
 @login_required    
 def user_likes(request):

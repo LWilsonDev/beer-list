@@ -10,7 +10,10 @@ urlpatterns = [
     
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
-    
+    path('register/', views.register, name='register'),
+    path('users/', views.user_list, name='user_list'),
+    path('users/<username>/', views.user_detail, name='user_detail'),
+    path('edit/', views.edit, name='edit'),
     # change password urls
     path('password_change/', auth_views.PasswordChangeView.as_view(), name='password_change'),
     path('password_change/done/', auth_views.PasswordChangeDoneView.as_view(), name='password_change_done'),
@@ -21,6 +24,6 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
     # alternative way to include authentication views
     # path('', include('django.contrib.auth.urls')),
-    path('register/', views.register, name='register'),
+   
     
 ]
