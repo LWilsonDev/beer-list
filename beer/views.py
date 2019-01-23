@@ -28,10 +28,37 @@ def index(request):
 @login_required 
 def user_profile(request, username):
     user = get_object_or_404(User, username=username, is_active=True)
-    object_list = user.likes.all()
+    user_likes = user.likes.all()[:4]
     user_reviews = Review.objects.filter(author=user)
+    review_creator=False
+    if request.user == user:
+        review_creator=True
+    paginator = Paginator(user_reviews, 4) # 4 posts in each page
+    page = request.GET.get('page')
+    try:
+        user_reviews = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        user_reviews = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        user_reviews = paginator.page(paginator.num_pages)
+    context = {
+        'user':user,
+        'user_reviews': user_reviews, 
+        'page':page, 
+        'user_likes':user_likes,
+        'review_creator': review_creator
+    }    
+   
+    return render(request, 'accounts/user/detail.html', context)
+
+
+def user_likes(request, username):
+    user = get_object_or_404(User, username=username, is_active=True)
+    object_list = user.likes.all()
     #user_review = object_list.filter(reviews__author=user)
-    paginator = Paginator(object_list, 4) # 4 posts in each page
+    paginator = Paginator(object_list, 8) # 8 posts in each page
     page = request.GET.get('page')
     try:
         beers = paginator.page(page)
@@ -42,36 +69,12 @@ def user_profile(request, username):
         # If page is out of range deliver last page of results
         beers = paginator.page(paginator.num_pages)
     context = {
-        'user':user,
         'beers': beers, 
         'page':page, 
-        'user_reviews':user_reviews
+        'user':user
     }    
    
-    return render(request, 'accounts/user/detail.html', context)
-
-
-#def user_likes(request):
-#    user=request.user
-#    object_list = user.likes.all()
-#    #user_review = object_list.filter(reviews__author=user)
-#    paginator = Paginator(object_list, 4) # 4 posts in each page
-#    page = request.GET.get('page')
-#    try:
-#        beers = paginator.page(page)
-#    except PageNotAnInteger:
-#        # If page is not an integer deliver the first page
-#        beers = paginator.page(1)
-#    except EmptyPage:
-#        # If page is out of range deliver last page of results
-#        beers = paginator.page(paginator.num_pages)
-#    context = {
-#        'beers': beers, 
-#        'page':page, 
-#        #'user_review':user_review
-#    }    
-    
-#    return render(request, 'beer/user_likes.html', context)
+    return render(request, 'beer/user_likes.html', context)
     
 def beer_list(request, tag_slug=None):
     object_list = Beer.objects.all()
@@ -80,7 +83,7 @@ def beer_list(request, tag_slug=None):
         tag = get_object_or_404(Tag, slug=tag_slug)
         object_list = object_list.filter(tags__in=[tag])
         
-    paginator = Paginator(object_list, 4) # 4 posts in each page
+    paginator = Paginator(object_list, 8) # 8 posts in each page
     page = request.GET.get('page')
     try:
         beers = paginator.page(page)
@@ -102,10 +105,7 @@ def beer_list(request, tag_slug=None):
 def beer_detail(request, pk):
     beer = get_object_or_404(Beer, pk=pk)
     is_liked = False
-    # Check if user created the beer, so we can show them delete btn
-    beer_creator = False
-    if request.user == beer.added_by:
-            beer_creator = True
+    
     if beer.likes.filter(id=request.user.id).exists():
         is_liked=True
     review_list = beer.reviews.all()
@@ -139,7 +139,7 @@ def beer_detail(request, pk):
     # get similar beers 
     beer_tags_ids = beer.tags.values_list('id', flat=True)
     similar_beers = Beer.objects.filter(tags__in=beer_tags_ids).exclude(id=beer.id)
-    similar_beers = similar_beers.annotate(same_tags=Count('tags')).order_by('-same_tags', '-added_date')[:3]
+    similar_beers = similar_beers.annotate(same_tags=Count('tags')).order_by('-same_tags', '-added_date')[:4]
     context = {
         'form':form, 
         'beer':beer, 
@@ -147,8 +147,6 @@ def beer_detail(request, pk):
         'page':page, 
         'similar_beers': similar_beers,
         'is_liked':is_liked,
-        'beer_creator':beer_creator
-    
     }
     return render(request, 'beer/beer_detail.html', 
                     context)    
@@ -186,7 +184,10 @@ def beer_edit(request, pk):
     # Check if form is edit or add
     beer_edit=True
     beer = get_object_or_404(Beer, pk=pk)
-    
+    # Check if user created the beer, so we can show them delete btn
+    beer_creator = False
+    if request.user == beer.added_by:
+            beer_creator = True
     if request.method == 'POST':
         form = BeerCreateForm(request.POST, instance=beer)
         try:
@@ -199,7 +200,7 @@ def beer_edit(request, pk):
     else:
         form = BeerCreateForm(instance=beer)
         
-    return render(request, 'beer/beer_form.html', {'form':form, 'beer':beer, 'beer_edit': beer_edit})    
+    return render(request, 'beer/beer_form.html', {'form':form, 'beer':beer, 'beer_edit': beer_edit, 'beer_creator':beer_creator})    
 
 @login_required   
 def like_beer(request):
@@ -226,3 +227,10 @@ def beer_delete(request, pk):
     beer.delete()
     messages.success(request, 'Beer has been deleted')
     return redirect('index')
+    
+@login_required
+def review_delete(request, pk):
+    review = get_object_or_404(Review, pk=pk)
+    review.delete()
+    messages.success(request, 'Your review has been deleted')
+    return redirect('user_profile', review.author)

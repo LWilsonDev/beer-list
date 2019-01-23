@@ -13,9 +13,12 @@
         <div class="">
           {{ form|crispy }}
         </div>
-      
-    <input class="btn btn-secondary" type="submit" {%if beer_edit%}value="Save"{%else%}value="Add beer"{%endif%}>
-    
+       {% if review_creator %}
+        {%endif%}
+    {%if beer_creator and beer_edit %}
+        <a href="{% url 'beer_delete' pk=beer.id %}"class="btn btn-outline-dark btn-sm"><i class="fas fa-trash-alt"></i></a>
+        {%endif%}
+        <input class="btn btn-secondary ml-2" type="submit" {%if beer_edit%}value="Save"{%else%}value="Add beer"{%endif%}>
   </form>
 </div>
 </div>

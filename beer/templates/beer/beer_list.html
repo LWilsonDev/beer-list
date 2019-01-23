@@ -26,7 +26,7 @@
                     
                     <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
                     <p>{{beer.strength}}% ABV</p>
-                    <p>Added by {{beer.added_by}}</p>
+                    <p>Added by <a href="{{ beer.added_by.get_absolute_url }}">{{beer.added_by}}</a></p>
                     
                     <div class="">
                     {% if beer.tags %}

@@ -6,13 +6,13 @@
         <div class='row'>
           <div class='col-sm-6 text-center'>
             {% if beer.image %}
-            <a href="{{ beer.get_absolute_url }}"><img src="{{beer.image.url}}" class="beer-img-sm" alt="..."></a> {% else %}
-            <a href="{{ beer.get_absolute_url }}"><img src="{% static 'images/logo.png' %}" class="beer-img-sm" alt="..."></a> {% endif %}
+            <img src="{{beer.image.url}}" class="beer-img-sm" alt="..."> {% else %}
+            <img src="{% static 'images/logo.png' %}" class="beer-img-sm" alt="..."> {% endif %}
           </div>
           <div class='col-sm-6'>
-            <a class='link-header' href="{{ beer.get_absolute_url }}">
+            
               <h1 class="small-heading mt-2 mb-2">{{beer.name}}</h1>
-            </a>
+            
             
             <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
             <p>{{beer.strength}}% ABV</p>
@@ -34,20 +34,16 @@
         {% include 'beer/like_section.html' %}
       </div>
           <a href="{% url 'beer_edit' pk=beer.id %}"class='btn btn-outline-secondary mr-2 ml-2'>Add/edit beer details</a>
-          {%if beer_creator %}
-        <a href="{% url 'beer_delete' pk=beer.id %}"class="btn btn-danger">Delete beer</a>
-        {%endif%}
+          
           <!-- Button trigger modal -->
           <button type="button" class="btn btn-secondary mr-2 ml-2" data-toggle="modal" data-target="#addReview">
             Add Review
           </button> {%endif%}
+         
         </div>
         
       </div>
-      
-       
-      
-      
+
       {% for review in reviews %}
       <div class='review-container'>
         <p class='review-info'>Reviewed by <a href="{{ review.author.get_absolute_url }}" class='review-header'>{{review.author}}</a> on {{review.created}}</p>
@@ -62,12 +58,13 @@
           {%if review.notes %}
           <div {%if review.image%}class='col-md-8'{%else %}class='col'{%endif%}>
             <p>{{review.notes}}</p>
+            
           </div>
           {% endif %}
         </div>
       </div>
       {% endfor%} 
-      {% include "review_pagination.html" with page=reviews %}
+      {% include "pagination.html" with page=reviews %}
     </div>
     <div class='col-lg-5'>
       <div class='aside'>

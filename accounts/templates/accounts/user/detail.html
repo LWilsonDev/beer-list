@@ -9,7 +9,9 @@
           <h3 class="small-heading  review-header mb-2">{{review.beer}}</h3>
         </a>
         <p class='review-rating rated'>Rated: {{review.rating}}/5</p>
+        
         <h4 class='brewery-text'>{{review.beer.brewery}}, {{review.beer.country_of_origin}} </h4>
+        
         <p class='review-info'>{{review.created}}</p>
         
         <hr>
@@ -21,16 +23,24 @@
           {%endif%} {%if review.notes %}
           <div {%if review.image%}class='col-md-8' {%else %}class='col' {%endif%}>
             <p>{{review.notes}}</p>
+            {% if review_creator %}
+        <a href="{% url 'review_delete' pk=review.id %}"class="btn btn-outline-dark btn-sm float-right"><i class="fas fa-trash-alt"></i></a>
+        {%endif%}
           </div>
           {% endif %}
         </div>
+        
       </div>
-      {% endfor%} {% include "review_pagination.html" with page=reviews %}
+      
+      {%empty %}
+      <p class=text-orange>{{user.username}} hasn't reviewed any beers yet...</p>
+      {% endfor%} 
+      {% include "review_pagination.html" with page=user_reviews %}
     </div>
     <div class='col-lg-5'>
       <div class='aside'>
         <h2 class='subtitle'>{{user.username}} likes</h2>
-        {% for beer in beers %}
+        {% for beer in user_likes %}
         <div class='container sm-beer-container'>
           <div class='row'>
             <div class='col-6 text-center'>
@@ -47,9 +57,13 @@
             </div>
           </div>
         </div>
+        
         {% empty %}
         <p class='text-orange'>{{user.username}} hasn't liked any beers yet:(</p>
         {% endfor %}
+        {% if user_likes.count > 4 %}
+        <a href="{% url 'user_likes' user %}">See all</a>
+        {% endif %}
       </div>
     </div>
   </div>

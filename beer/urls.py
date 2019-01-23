@@ -15,6 +15,8 @@ urlpatterns = [
     path('delete_beer/<int:pk>', views.beer_delete, name='beer_delete'),
     path('like', views.like_beer, name='like_beer'),
     path('users/<username>/', views.user_profile, name='user_profile'),
+    path('likes/<username>/', views.user_likes, name='user_likes'),
+    path('delete_review/<int:pk>', views.review_delete, name='review_delete'),
     
    
     
