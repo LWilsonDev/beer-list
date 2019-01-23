@@ -38,12 +38,15 @@ class Beer(models.Model):
         return self.likes.count()
     
     # add to save function to capitalize 'name', 'brewery', 'country'
+   
     def save(self, *args, **kwargs):
-        for field_name in ['name', 'brewery', 'country_of_origin']:
+        for field_name in ['name', 'brewery']:
             val = getattr(self, field_name, False)
             if val:
                 setattr(self, field_name, val.title())
-        super(Beer, self).save(*args, **kwargs)        
+        super(Beer, self).save(*args, **kwargs) 
+        
+    
         
         
     def get_absolute_url(self):

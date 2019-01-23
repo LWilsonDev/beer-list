@@ -1,7 +1,11 @@
 {% extends "base.html" %} {% load crispy_forms_tags %} {% block content %}
 <div class='container'>
 <div class='form-container'>
+  {% if beer_edit %}
+  <h1>Edit Beer</h1>
+  {% else %}
 <h1>Add Beer</h1>
+{%endif%}
 
   <form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
@@ -10,7 +14,8 @@
           {{ form|crispy }}
         </div>
       
-    <input class="btn btn-secondary" type="submit" value="Add Beer">
+    <input class="btn btn-secondary" type="submit" {%if beer_edit%}value="Save"{%else%}value="Add beer"{%endif%}>
+    
   </form>
 </div>
 </div>

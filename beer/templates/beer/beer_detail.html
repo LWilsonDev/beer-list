@@ -34,7 +34,9 @@
         {% include 'beer/like_section.html' %}
       </div>
           <a href="{% url 'beer_edit' pk=beer.id %}"class='btn btn-outline-secondary mr-2 ml-2'>Add/edit beer details</a>
-
+          {%if beer_creator %}
+        <a href="{% url 'beer_delete' pk=beer.id %}"class="btn btn-danger">Delete beer</a>
+        {%endif%}
           <!-- Button trigger modal -->
           <button type="button" class="btn btn-secondary mr-2 ml-2" data-toggle="modal" data-target="#addReview">
             Add Review

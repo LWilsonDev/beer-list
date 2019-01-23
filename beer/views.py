@@ -15,6 +15,8 @@ from django.core.files.storage import FileSystemStorage
 from django.db.models import Count
 from django.views.generic import UpdateView
 from django.template.loader import render_to_string
+from django.utils.html import format_html
+
 
 
 def index(request):
@@ -100,6 +102,10 @@ def beer_list(request, tag_slug=None):
 def beer_detail(request, pk):
     beer = get_object_or_404(Beer, pk=pk)
     is_liked = False
+    # Check if user created the beer, so we can show them delete btn
+    beer_creator = False
+    if request.user == beer.added_by:
+            beer_creator = True
     if beer.likes.filter(id=request.user.id).exists():
         is_liked=True
     review_list = beer.reviews.all()
@@ -141,6 +147,7 @@ def beer_detail(request, pk):
         'page':page, 
         'similar_beers': similar_beers,
         'is_liked':is_liked,
+        'beer_creator':beer_creator
     
     }
     return render(request, 'beer/beer_detail.html', 
@@ -154,13 +161,21 @@ def beer_create(request):
         if form.is_valid():
             cd = form.cleaned_data
             new_item = form.save(commit=False)
-            
-            #assign user to item
-            new_item.added_by = request.user
-            new_item.save()
-            messages.success(request, 'Beer added successfully')
-            #redirect to new item detail view
-            return redirect(new_item.get_absolute_url())
+            # Check if the beer has already been added
+            same_beer = Beer.objects.filter(name=new_item.name, brewery=new_item.brewery).exists()
+            # Give error message and show user the beer link
+            if same_beer:
+                the_beer = Beer.objects.get(name=new_item.name, brewery=new_item.brewery)
+                messages.error(request, 'This beer has already been added. You can find it <a href="{}">here</a>'.format(the_beer.get_absolute_url()), 
+                                    extra_tags='safe')
+            else:
+                #assign user to item
+                new_item.added_by = request.user
+                new_item.save()
+                form.save_m2m()
+                messages.success(request, 'Beer added successfully')
+                #redirect to new item detail view
+                return redirect(new_item.get_absolute_url())
     else:
         form = BeerCreateForm()
     return render(request, 'beer/beer_form.html', 
@@ -168,7 +183,10 @@ def beer_create(request):
    
 @login_required
 def beer_edit(request, pk):
+    # Check if form is edit or add
+    beer_edit=True
     beer = get_object_or_404(Beer, pk=pk)
+    
     if request.method == 'POST':
         form = BeerCreateForm(request.POST, instance=beer)
         try:
@@ -180,7 +198,8 @@ def beer_edit(request, pk):
             messages.warning(request, 'There was an issue saving your updates {}'.format(e))
     else:
         form = BeerCreateForm(instance=beer)
-    return render(request, 'beer/beer_form.html', {'form':form, 'beer':beer})    
+        
+    return render(request, 'beer/beer_form.html', {'form':form, 'beer':beer, 'beer_edit': beer_edit})    
 
 @login_required   
 def like_beer(request):
@@ -201,3 +220,9 @@ def like_beer(request):
         html = render_to_string('beer/like_section.html', context, request=request)
         return JsonResponse({'form':html})
     
+@login_required
+def beer_delete(request, pk):
+    beer = get_object_or_404(Beer, pk=pk)
+    beer.delete()
+    messages.success(request, 'Beer has been deleted')
+    return redirect('index')
