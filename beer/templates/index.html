@@ -1,7 +1,6 @@
 {% extends 'base.html' %} {% block title %}Beer List{% endblock %} {% block content %}{% load static %}
 <div class="jumbotron jumbotron-fluid vertical-center index-jumbo">
     <div class="container text-center">
-
         <div class=''>
             <img style="height: 140px;" src="{% static 'images/logo.png' %}"></img>
         </div>
@@ -31,13 +30,10 @@
                         {% endif %}
                     </div>
                     <div class='col-sm-6 col-lg-12'>
-                        
                         <a class='link-header' href="{{ beer.get_absolute_url }}"><h3 class="small-heading mt-2 mb-2">{{beer.name}}</h3></a>
-                    
                     <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
                     <p>{{beer.strength}}% ABV</p>
                     <p>Added by <a href="{{ beer.added_by.get_absolute_url }}">{{beer.added_by}}</a></p>
-                    
                     <div class="">
                     {% if beer.tags %}
                     {% for tag in beer.tags.all %}
@@ -49,13 +45,9 @@
                 </div>
                     </div>
                 </div>
-                
-
             </div>
         </div>
         {%endfor %}
-
-
     </div>
 </div>
 

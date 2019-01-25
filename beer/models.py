@@ -8,6 +8,8 @@ from taggit.managers import TaggableManager
 import numpy as np
 
 
+
+
 class Beer(models.Model):
     name = models.CharField(max_length=100)
     brewery = models.CharField(max_length=100)
