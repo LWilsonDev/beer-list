@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'beer',
+    'search',
     'payment',
     'taggit',
     'crispy_forms',
@@ -188,3 +189,6 @@ AWS_PUBLIC_MEDIA_LOCATION = 'media/public'
 
 STATICFILES_STORAGE = 'beer_list.storage_backends.StaticStorage'
 DEFAULT_FILE_STORAGE = 'beer_list.storage_backends.PublicMediaStorage'
+
+STRIPE_PUBLISHABLE = os.environ['STRIPE_PUBLISHABLE']
+STRIPE_SECRET= os.environ['STRIPE_SECRET']

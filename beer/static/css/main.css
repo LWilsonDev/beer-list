@@ -108,6 +108,7 @@ body {
     margin-right: auto;
     margin-left: auto;
     max-width: 95%;
+    min-height: 280px;
 }
 
 .sm-beer-container {
@@ -259,7 +260,7 @@ body {
     letter-spacing: .1em;
     /* Adjust as needed */
     animation: typing 2s steps(30, end),
-    blink-caret .5s step-end 15;
+    blink-caret .5s step-end infinite;
 
 }
 
@@ -299,6 +300,9 @@ body {
     .login-form {
         max-width: 60%;
     }
+    .beer-container{
+        min-height: 300px;
+    }
 }
 
 
@@ -316,5 +320,8 @@ body {
 
     .login-form {
         max-width: 50%;
+    }
+    .beer-container{
+        min-height: 475px;
     }
 }

@@ -21,7 +21,6 @@ from django.utils.html import format_html
 
 def index(request):
     recent_beers = Beer.objects.order_by('-added_date')[:4]
-    
     return render(request, 'index.html', {'recent_beers':recent_beers})
     
 
@@ -189,7 +188,7 @@ def beer_edit(request, pk):
     if request.user == beer.added_by:
             beer_creator = True
     if request.method == 'POST':
-        form = BeerCreateForm(request.POST, instance=beer)
+        form = BeerCreateForm(request.POST, request.FILES, instance=beer)
         try:
             if form.is_valid():
                 form.save()

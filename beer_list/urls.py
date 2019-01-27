@@ -18,12 +18,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from accounts import urls as accounts_urls
+from search import urls as search_urls
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('beer.urls')),
     path('accounts/', include(accounts_urls)),
+    path('search/', include(search_urls)),
 
 ]
 if settings.DEBUG:

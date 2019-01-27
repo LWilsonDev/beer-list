@@ -7,12 +7,16 @@
         <div class='typewriter'>
             <h1 class="logo-text">the beer list.</h1>
         </div>
-        <div class="main-search input-group mb-3">
-            <input type="text" class="form-control" placeholder="Search" aria-label="Recipient's username" aria-describedby="button-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-secondary" type="button" id="button-addon2"><i class="fas fa-search"></i></button>
+        <form action="{% url 'search_beer' %}" method='GET'>
+            
+            <div class="main-search input-group mb-3">
+                
+                <input type="text" class="form-control" name='q' value="{{request.GET.q}}" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
 </div>
 <div class='container'>
@@ -24,25 +28,22 @@
                 <div class='row'>
                     <div class='col-sm-6 col-lg-12 text-center'>
                         {% if beer.image %}
-                        <a href="{{ beer.get_absolute_url }}"><img src="{{beer.image.url}}" class="beer-img-sm" alt="..."></a>
-                        {% else %}
-                        <a href="{{ beer.get_absolute_url }}"><img src="{% static 'images/logo.png' %}" class="beer-img-sm" alt="..."></a>
-                        {% endif %}
+                        <a href="{{ beer.get_absolute_url }}"><img src="{{beer.image.url}}" class="beer-img-sm" alt="..."></a> {% else %}
+                        <a href="{{ beer.get_absolute_url }}"><img src="{% static 'images/logo.png' %}" class="beer-img-sm" alt="..."></a> {% endif %}
                     </div>
                     <div class='col-sm-6 col-lg-12'>
-                        <a class='link-header' href="{{ beer.get_absolute_url }}"><h3 class="small-heading mt-2 mb-2">{{beer.name}}</h3></a>
-                    <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
-                    <p>{{beer.strength}}% ABV</p>
-                    <p>Added by <a href="{{ beer.added_by.get_absolute_url }}">{{beer.added_by}}</a></p>
-                    <div class="">
-                    {% if beer.tags %}
-                    {% for tag in beer.tags.all %}
-                    <span class='tags'>
+                        <a class='link-header' href="{{ beer.get_absolute_url }}">
+                            <h3 class="small-heading mt-2 mb-2">{{beer.name}}</h3>
+                        </a>
+                        <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
+                        <p>{{beer.strength}}% ABV</p>
+                        <p>Added by <a href="{{ beer.added_by.get_absolute_url }}">{{beer.added_by}}</a></p>
+                        <div class="">
+                            {% if beer.tags %} {% for tag in beer.tags.all %}
+                            <span class='tags'>
                         <a href="{% url 'beer_list_by_tag' tag.slug %}">{{ tag.name }}</a> 
-                    </span>
-                     {% endfor %}
-                    {%endif%}
-                </div>
+                    </span> {% endfor %} {%endif%}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -51,5 +52,5 @@
     </div>
 </div>
 
-    
+
 {% endblock %}
