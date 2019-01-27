@@ -19,6 +19,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from accounts import urls as accounts_urls
 from search import urls as search_urls
+from payment import urls as payment_urls
 
 
 urlpatterns = [
@@ -26,6 +27,7 @@ urlpatterns = [
     path('', include('beer.urls')),
     path('accounts/', include(accounts_urls)),
     path('search/', include(search_urls)),
+    path('payment', include(payment_urls)),
 
 ]
 if settings.DEBUG:

@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'bootstrap_modal_forms',
     'django.contrib.auth',
-    'storages'
+    'storages',
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

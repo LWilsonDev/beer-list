@@ -1,0 +1,24 @@
+{% extends 'base.html' %}{% load crispy_forms_tags %} 
+{% block title %}Donate{% endblock %}
+{% block content%}
+<div class='container'>
+    <h2 class='subtitle'>Say Cheers!</h2>
+<div class='form-container text-center'>
+<h3 class='mt-3'>Donate £3 for a well-earned beer. Cheers!</h3>
+<p>If you think the developers of The Beer List could do with a pint, click the button below to donate £3 using the secure Stripe payment system</p>
+
+
+<form action="{% url 'charge' %}" method="post">
+  {% csrf_token %}
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="{{ key }}"
+          data-description="Beer list donation"
+          data-amount="300"
+          data-locale="auto"
+          data-currency="gbp"></script>
+</form>
+
+</div>
+</div>
+
+{% endblock %}
