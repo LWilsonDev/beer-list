@@ -27,7 +27,7 @@ class TestBeerModel(TestCase):
             added_by=self.user
         )
         beer.save()
-        self.assertEqual(beer.get_absolute_url(), '/beer/1')
+        self.assertEqual(beer.get_absolute_url(), '/beer/{}'.format(beer.id))
         
     def test_review_average_rating_with_one_review(self):
         beer = Beer(
