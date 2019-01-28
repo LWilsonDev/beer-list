@@ -39,9 +39,10 @@
           Account
         </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item">Currently logged in as {{user.username}}</a>
+            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{% url 'edit' %}">Edit profile</a>
             <a class="dropdown-item" href="{% url 'password_change' %}">Change password</a>
-            <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
           </div>
         </li>

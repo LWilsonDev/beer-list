@@ -149,9 +149,16 @@ MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = 'beer/index'
 
-TAGGIT_CASE_INSENSITIVE = True    
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
+TAGGIT_CASE_INSENSITIVE = True  
+#if development:
+#    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#else:
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_PORT = 587
+    
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'beer/media')
 

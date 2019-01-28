@@ -78,7 +78,5 @@ class Review(models.Model):
         #order reviews alphabetically, newest first
         ordering = ('beer', '-created')  
 
-    def get_absolute_url(self):
-        """Returns the url to access a particular reviews."""
-        return reverse('reviews', args=[str(self.id)])
+    
     

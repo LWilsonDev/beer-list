@@ -24,7 +24,7 @@ def index(request):
     return render(request, 'index.html', {'recent_beers':recent_beers})
     
 
-@login_required 
+ 
 def user_profile(request, username):
     user = get_object_or_404(User, username=username, is_active=True)
     user_likes = user.likes.all()[:4]
@@ -53,28 +53,7 @@ def user_profile(request, username):
     return render(request, 'accounts/user/detail.html', context)
 
 
-def user_likes(request, username):
-    user = get_object_or_404(User, username=username, is_active=True)
-    object_list = user.likes.all()
-    #user_review = object_list.filter(reviews__author=user)
-    paginator = Paginator(object_list, 8) # 8 posts in each page
-    page = request.GET.get('page')
-    try:
-        beers = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer deliver the first page
-        beers = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range deliver last page of results
-        beers = paginator.page(paginator.num_pages)
-    context = {
-        'beers': beers, 
-        'page':page, 
-        'user':user
-    }    
-   
-    return render(request, 'beer/user_likes.html', context)
-    
+
 def beer_list(request, tag_slug=None):
     object_list = Beer.objects.all()
     tag = None
@@ -169,6 +148,7 @@ def beer_create(request):
                 #assign user to item
                 new_item.added_by = request.user
                 new_item.save()
+                #bug fix to save uploaded media
                 form.save_m2m()
                 messages.success(request, 'Beer added successfully')
                 #redirect to new item detail view
