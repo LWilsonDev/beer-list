@@ -1,6 +1,14 @@
-language: python
-python:
-    - "3.4.3"
-install: "pip install -r requirements.txt"
-script:
-- SECRET_KEY="jh" ./manage.py test
+language: python 
+    python:
+      - "3.4"
+     
+    services: 
+      - postgresql
+    env: 
+      -DJANGO=2.0.5 DB=postgresql
+    install:
+      - pip install -r requirements.txt
+    before_script: 
+      - postgresql -e 'create database test;' -u root
+    script: 
+      - python manage.py test
