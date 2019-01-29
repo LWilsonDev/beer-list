@@ -166,7 +166,7 @@ body {
 /* ---------CONTAINERS and FORMS-----------*/
 
 .message {
- margin-top: 60px;   
+ margin-top: 10px;   
 }
 
 .main-search {
@@ -384,15 +384,13 @@ body {
     .beer-container{
         min-height: 300px;
     }
-    
     .beer-btn {
         display: inline-block;
+        margin-top: 0px;
     }
-    
     .rated {
     margin-top: 0px;
     }
-
 }
 
 
