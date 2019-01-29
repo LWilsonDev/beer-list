@@ -6,7 +6,7 @@
 
 This is a Django app, where users can log in securely, keep track of their favourite beers, and browse other user's beerlists for inspiration.
 With the growing trend for craft beer and independant breweries, I wanted to create an app where users can review the beers they have tried, and keep track of their favourites.
-**View the app [here](https://the-beer-list-app.herokuapp.com/beers/)**
+**View the app [here](https://the-beer-list-app.herokuapp.com/)**
 
 **View files [here](https://github.com/LWilsonDev/beer-list)**
 
@@ -126,14 +126,19 @@ The automated tests are seperated as follows:
 
 #### Test views:
 
-- *Beer app*
+##### Beer app
+
  - Tests for each view, making sure the correct status code returns, and the correct template is being rendered
-- *Accounts app*
+ - 
+##### Accounts app
+
  - Tests for each view, making sure redirects are functioning upon login and logout
 
 #### Test models:
 
-- *Beer app* test_models.py: 
+##### Beer app: 
+
+test_models.py:
  - Test beer and brewery are capitalized
  - Test ratings are averaged
  - Test message is shown if no ratings
@@ -143,11 +148,14 @@ The automated tests are seperated as follows:
 
 #### Test forms:
 
-- *Beer app*
+##### Beer app 
+
  - Test that a beer can be added
  - Test a beer cannot be added without the required fields
  - Test that the form is validated with correct message
-- *Accounts app*
+ - 
+##### Accounts app
+
  - Test that user can login
 
 
