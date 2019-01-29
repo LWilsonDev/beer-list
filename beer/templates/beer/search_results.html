@@ -1,53 +1,39 @@
-{% extends 'base.html' %}{% load static %}
-{% block title%}Search{%endblock%}
-{% block content %}
+{% extends 'base.html' %}{% load static %} {% block title%}Search{%endblock%} {% block content %}
 
 <div class='container'>
-
-<h1 class='subtitle mt-4'>Beers matching '{{query}}'</h1>
-    <div class='row'>
-       {% for beer in results %}
-        <div class='col-sm-12 col-md-6 col-lg-3'>
-            <div class='beer-container'>
-                <div class='row'>
-                    <div class='col-sm-6 col-lg-12 text-center'>
-                        {% if beer.image %}
-                        <a href="{{ beer.get_absolute_url }}"><img src="{{beer.image.url}}" class="beer-img-sm" alt="..."></a>
-                        {% else %}
-                        <a href="{{ beer.get_absolute_url }}"><img src="{% static 'images/logo.png' %}" class="beer-img-sm" alt="..."></a>
-                        {% endif %}
-                    </div>
-                    <div class='col-sm-6 col-lg-12'>
-                        
-                        <a class='link-header' href="{{ beer.get_absolute_url }}"><h3 class="small-heading mt-2 mb-2">{{beer.name}}</h3></a>
-                    
-                    <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
-                    <p>{{beer.strength}}% ABV</p>
-                    <p>Added by <a href="{{ beer.added_by.get_absolute_url }}">{{beer.added_by}}</a></p>
-                    
-                    <div class="">
-                    {% if beer.tags %}
-                    {% for tag in beer.tags.all %}
-                    <span class='tags'>
-                        <a href="{% url 'beer_list_by_tag' tag.slug %}">{{ tag.name }}</a> 
-                    </span>
-                     {% endfor %}
-                    {%endif%}
-                </div>
-                    </div>
-                </div>
-                
-
+  <h1 class='subtitle mt-4'>Beers matching '{{query}}'</h1>
+  <div class='row'>
+    {% for beer in results %}
+    <div class='col-sm-12 col-md-6 col-lg-3'>
+      <div class='beer-container'>
+        <div class='row'>
+          <div class='col-sm-6 col-lg-12 text-center'>
+            {% if beer.image %}
+            <a href="{{ beer.get_absolute_url }}"><img src="{{beer.image.url}}" class="beer-img-sm" alt="..."></a> {% else %}
+            <a href="{{ beer.get_absolute_url }}"><img src="{% static 'images/logo.png' %}" class="beer-img-sm" alt="..."></a> {% endif %}
+          </div>
+          <div class='col-sm-6 col-lg-12'>
+            <a class='link-header' href="{{ beer.get_absolute_url }}">
+              <h3 class="small-heading mt-2 mb-2">{{beer.name}}</h3>
+            </a>
+            <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
+            <p>{{beer.strength}}% ABV</p>
+            <p>Added by <a href="{{ beer.added_by.get_absolute_url }}">{{beer.added_by}}</a></p>
+            <div class="">
+              {% if beer.tags %} {% for tag in beer.tags.all %}
+              <span class='tags'>
+                <a href="{% url 'beer_list_by_tag' tag.slug %}">{{ tag.name }}</a> 
+               </span> {% endfor %} {%endif%}
             </div>
+          </div>
         </div>
-        {%empty %}
-<p class='text-orange'>No matches</p>
-{% endfor %}
-
+      </div>
     </div>
-    {% include "pagination.html" with page=beers %}
+    {%empty %}
+    <p class='text-orange'>No matches</p>
+    {% endfor %}
+  </div class='mt-4 mb-4'>
+  {% include "pagination.html" with page=beers %}
 </div>
-
-
 
 {% endblock %}

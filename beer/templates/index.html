@@ -8,18 +8,17 @@
             <h1 class="logo-text">the beer list.</h1>
         </div>
         <form action="{% url 'search_beer' %}" method='GET'>
-            
             <div class="main-search input-group mb-3">
-                
-                <input type="text" class="form-control" name='q' value="{{request.GET.q}}" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
+                <input type="text" class="form-control search" name='q' value="{{request.GET.q}}" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
                 <div class="input-group-append">
                     <button class="btn btn-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
                 </div>
             </div>
         </form>
+        <a href="#recent"><i class="fas fa-chevron-down text-orange chev"></i></a>
     </div>
 </div>
-<div class='container'>
+<div id='recent' class='container'>
     <h2 class='subtitle'>recently added:</h2>
     <div class='row'>
         {% for beer in recent_beers %}

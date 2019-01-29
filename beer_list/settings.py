@@ -19,8 +19,6 @@ if os.environ.get('DEVELOPMENT'):
 else:
     development = False
 
-    
-# for development env export DEVELOPMENT=1    
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -181,9 +179,6 @@ AWS_S3_OBJECT_PARAMETERS = {
 }
 AWS_STATIC_LOCATION = 'static'
 
-#if development:
-#    STATIC_URL = '/static/'
-#else:
 STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_STATIC_LOCATION)
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

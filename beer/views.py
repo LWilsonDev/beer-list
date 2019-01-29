@@ -18,12 +18,11 @@ from django.template.loader import render_to_string
 from django.utils.html import format_html
 
 
-
 def index(request):
+    # display the last 4 recently added beers
     recent_beers = Beer.objects.order_by('-added_date')[:4]
     return render(request, 'index.html', {'recent_beers':recent_beers})
     
-
  
 def user_profile(request, username):
     user = get_object_or_404(User, username=username, is_active=True)
@@ -53,7 +52,6 @@ def user_profile(request, username):
     return render(request, 'accounts/user/detail.html', context)
 
 
-
 def beer_list(request, tag_slug=None):
     object_list = Beer.objects.all()
     tag = None
@@ -81,11 +79,15 @@ def beer_list(request, tag_slug=None):
   
   
 def beer_detail(request, pk):
+    """
+    Page showing individual beer, reviews, review-form, like-btn, and similar beers
+    """
     beer = get_object_or_404(Beer, pk=pk)
     is_liked = False
-    
+    # Check if user likes the beer
     if beer.likes.filter(id=request.user.id).exists():
         is_liked=True
+    # find all reviews of that beer and paginate    
     review_list = beer.reviews.all()
     
     paginator = Paginator(review_list, 4) # 4 reviews each page
@@ -100,6 +102,7 @@ def beer_detail(request, pk):
         reviews = paginator.page(paginator.num_pages)
       
     if request.method == "POST":
+        # POST method if user is leaving a review
         form = ReviewCreateForm(request.POST, request.FILES)
         if form.is_valid():
             cd = form.cleaned_data
@@ -148,7 +151,7 @@ def beer_create(request):
                 #assign user to item
                 new_item.added_by = request.user
                 new_item.save()
-                #bug fix to save uploaded media
+                #bug fix to save tags
                 form.save_m2m()
                 messages.success(request, 'Beer added successfully')
                 #redirect to new item detail view
@@ -183,8 +186,10 @@ def beer_edit(request, pk):
 
 @login_required   
 def like_beer(request):
+    # Get the beer object
     beer = get_object_or_404(Beer, id=request.POST.get('id'))
     is_liked = False
+    # Check if user has already liked the beer
     if beer.likes.filter(id=request.user.id).exists():
         beer.likes.remove(request.user)
         is_liked = False

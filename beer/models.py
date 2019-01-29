@@ -42,14 +42,15 @@ class Beer(models.Model):
     # add to save function to capitalize 'name', 'brewery', 'country'
    
     def save(self, *args, **kwargs):
-        for field_name in ['name', 'brewery']:
+        for field_name in ['name', 'brewery', 'country_of_origin']:
             val = getattr(self, field_name, False)
-            if val:
+            # if the word is more than 3 letters, title-case, else, capitalize. eg UK, USA, IPA are left/made uppercase
+            if len(val) > 3:
                 setattr(self, field_name, val.title())
+            else:
+                setattr(self, field_name, val.upper())
         super(Beer, self).save(*args, **kwargs) 
-        
-    
-        
+            
         
     def get_absolute_url(self):
         """Returns the url to access a particular instance of a beer."""

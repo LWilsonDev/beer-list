@@ -1,4 +1,6 @@
-{% extends 'base.html' %}{% load static %} {% block content %}
+{% extends 'base.html' %}{% load static %} 
+{% block title %}Profile{% endblock %} 
+{% block content %}
 <div class=container>
   <div class='row'>
     <div class='col-lg-7'>
@@ -9,11 +11,8 @@
           <h3 class="small-heading  review-header mb-2">{{review.beer}}</h3>
         </a>
         <p class='review-rating rated'>Rated: {{review.rating}}/5</p>
-        
         <h4 class='brewery-text'>{{review.beer.brewery}}, {{review.beer.country_of_origin}} </h4>
-        
         <p class='review-info'>{{review.created}}</p>
-        
         <hr>
         <div class='row'>
           {%if review.image%}
@@ -29,13 +28,15 @@
           </div>
           {% endif %}
         </div>
-        
       </div>
-      
       {%empty %}
       <p class=text-orange>{{user.username}} hasn't reviewed any beers yet...</p>
       {% endfor%} 
+      {% if review %}
+      <div class='mt-4 mb-4'>
       {% include "review_pagination.html" with page=user_reviews %}
+      </div>
+      {% endif %}
     </div>
     <div class='col-lg-5'>
       <div class='aside'>
@@ -57,7 +58,6 @@
             </div>
           </div>
         </div>
-        
         {% empty %}
         <p class='text-orange'>{{user.username}} hasn't liked any beers yet:(</p>
         {% endfor %}
@@ -67,7 +67,6 @@
       </div>
     </div>
   </div>
-</div>
 </div>
 
 

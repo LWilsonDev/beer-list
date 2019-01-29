@@ -1,8 +1,10 @@
-{% extends 'base.html' %}{% load crispy_forms_tags %}{% load static %} {% block content %}
+{% extends 'base.html' %}{% load crispy_forms_tags %}{% load static %} 
+{% block title %}Beer List{% endblock %} 
+{% block content %}
 <div class=container>
   <div class='row'>
     <div class='col-lg-7'>
-      <div class='beer-container mt-4'>
+      <div class='beer-container-solo mt-4'>
         <div class='row'>
           <div class='col-sm-6 text-center'>
             {% if beer.image %}
@@ -30,12 +32,12 @@
           <div id="like-section" class='like-section'>
           {% include 'beer/like_section.html' %}
           </div>
-          <a href="{% url 'beer_edit' pk=beer.id %}"class='btn btn-outline-secondary mr-2 ml-2'>Add/edit beer details</a>
+          <a href="{% url 'beer_edit' pk=beer.id %}"class='btn btn-outline-secondary mr-2 ml-2 beer-btn'>Edit beer details</a>
           
           <!-- Button trigger modal -->
-          <button type="button" class="btn btn-secondary mr-2 ml-2" data-toggle="modal" data-target="#addReview">
+          <a class="btn btn-secondary text-white mr-2 ml-2 beer-btn" data-toggle="modal" data-target="#addReview">
             Add Review
-          </button> 
+          </a> 
          
         </div>
         {%else%}
@@ -100,7 +102,6 @@
 </div>
 </div>
 
-
 <!-- Modal for Add Review Form -->
 <div class="modal fade" id="addReview" tabindex="-1" role="dialog" aria-labelledby="addReview" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -123,6 +124,5 @@
     </div>
   </div>
 </div>
-
 
 {% endblock %}

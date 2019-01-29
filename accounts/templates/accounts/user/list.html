@@ -1,27 +1,23 @@
-{% extends 'base.html' %}{% load static %}
+{% extends 'base.html' %}{% load static %} 
+{% block title %}Beer List Users{% endblock %} 
 {% block content %}
 
-
 <div class='container'>
-   
-<h1 class='subtitle mt-4'>find drinkers</h1>
-
-    <div class='row'>
-        {% for user in users %}
-        <div class='col-sm-12 col-md-6 col-lg-3'>
-            <div class='beer-container'>
-                
-               <a class='link-header' href="{{ user.get_absolute_url }}"><h3 class="small-heading mt-2 mb-2">{{user.username}}</h3></a>
-                    
-                
-
-            </div>
-        </div>
-        {%endfor %}
-
-
+  <h1 class='subtitle mt-4'>find drinkers</h1>
+  <div class='row'>
+    {% for user in users %}
+    <div class='col-sm-12 col-md-6 col-lg-3'>
+      <div class='beer-container'>
+        <a class='link-header' href="{{ user.get_absolute_url }}">
+          <h3 class="small-heading mt-2 mb-2">{{user.username}}</h3>
+        </a>
+      </div>
     </div>
-    
+    {%endfor %}
+  </div>
+  <div class='mt-4 mb-4'>
+    {% include "review_pagination.html" with page=users %}
+  </div>
 </div>
 
 {% endblock %}

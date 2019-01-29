@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages, auth
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import UserLoginForm, UserRegistrationForm, UserEditForm, ProfileEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -65,8 +66,18 @@ def register(request):
   
 @login_required
 def user_list(request):
-    users = User.objects.filter(is_active=True)
-    return render(request, 'accounts/user/list.html', {'users':users})
+    object_list = User.objects.filter(is_active=True).order_by('username')
+    paginator = Paginator(object_list, 40) # 40 users in each page
+    page = request.GET.get('page')
+    try:
+        users = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        users = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        users = paginator.page(paginator.num_pages)
+    return render(request, 'accounts/user/list.html', {'users':users, 'page':page})
     
 @login_required
 def user_detail(request, username):
@@ -75,6 +86,7 @@ def user_detail(request, username):
     
 @login_required
 def edit(request):
+    """ edit user details"""
     if request.method == 'POST':
         user_form = UserEditForm(instance=request.user,
                                     data = request.POST)

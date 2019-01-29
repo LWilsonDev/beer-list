@@ -57,17 +57,3 @@ class TestViews(TestCase):
         self.assertEqual(page.status_code, 200)
         self.assertTemplateUsed(page, 'beer/beer_form.html')
             
-
-    #def test_edit_beer(self):
-    #    beer = Beer(
-    #    name= 'test-beer',
-    #    brewery= 'test-brewery',
-    #    country_of_origin= 'test-country',
-    #    strength='3.0',
-    #    added_by=self.user
-    #    )
-    #    beer.save()
-    #    id = beer.id
-    #    self.client.post("/edit_beer/{}".format(id), {'name': "different name", 'added_by':self.user})
-    #    edited_beer = get_object_or_404(Beer, pk=id)
-    #    self.assertEqual("Different Name", edited_beer.name)
