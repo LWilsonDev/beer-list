@@ -197,6 +197,7 @@ The navbar is a side-nav with burger-icon for small and medium screens, and is a
 
 #### Bugs left to fix:
 
+- There is an issure around the AJAX like button. It is working but still throws an error. I have started a new git branch to work on this whilst not affecting the production branch.
 - I struggled to implement the code to redirect a user to the page they were on afer logging in. For example, if a user is looking at a beer and wants to leave a review, they need to login. 
 - After logging in I would like the user to be redirected to the beer they were previouly looking at. At the moment, the user is redirected to the index page.  
 - When a user is adding a new beer, at the moment they only get notified that the beer already exists after they submit the form. This could be annoying to the user. I would like to notify the user if the beer exists as they are typing the beer/brewery. 
