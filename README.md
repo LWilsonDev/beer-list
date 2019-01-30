@@ -30,6 +30,9 @@ To keep the UX simple, I kept a similar layout and consistent style across the s
 - If the beer I am drinking is not on the app, I want to add it
 - I want to be able to search the app by beer, brewery, and country to find new beers for me to try
 
+#### Wireframe/mockups
+
+I created wireframe sketches on [invision](https://www.invisionapp.com/) to get an idea of layout before starting to code. They can be found [here](https://github.com/LWilsonDev/beer-list/blob/master/wireframe.jpg)
 
 ## Features
 
@@ -153,7 +156,8 @@ test_models.py:
  - Test that a beer can be added
  - Test a beer cannot be added without the required fields
  - Test that the form is validated with correct message
- - 
+ 
+
 ##### Accounts app
 
  - Test that user can login
