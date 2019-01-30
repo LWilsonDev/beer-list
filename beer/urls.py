@@ -3,8 +3,6 @@ from . import views
 from django.conf.urls import url
 
 
-
-
 urlpatterns = [
     path('', views.index, name='index'),
     path('beers/', views.beer_list, name='beer_list'),
@@ -14,10 +12,8 @@ urlpatterns = [
     path('edit_beer/<int:pk>', views.beer_edit, name='beer_edit'),
     path('delete_beer/<int:pk>', views.beer_delete, name='beer_delete'),
     path('like', views.like_beer, name='like_beer'),
+    path('likes/<username>/', views.user_likes, name='user_likes'),
     path('users/<username>/', views.user_profile, name='user_profile'),
     path('delete_review/<int:pk>', views.review_delete, name='review_delete'),
-    
-   
-    
-   
+
 ]

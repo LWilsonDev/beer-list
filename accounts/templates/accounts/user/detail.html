@@ -61,7 +61,7 @@
         {% empty %}
         <p class='text-orange'>{{user.username}} hasn't liked any beers yet:(</p>
         {% endfor %}
-        {% if user_likes.count > 4 %}
+        {% if user_likes %}
         <a href="{% url 'user_likes' user %}">See all</a>
         {% endif %}
       </div>

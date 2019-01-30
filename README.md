@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/LWilsonDev/beer-list.svg?branch=master)](https://travis-ci.org/LWilsonDev/beer-list)
-
 # The Beer List
 
 ### A place to discover beers, keep track of your favourites, and read reviews
@@ -47,6 +45,7 @@ I created wireframe sketches on [invision](https://www.invisionapp.com/) to get 
 - A paginated list of all the beers in the database
 - Each beer can be clicked on to see the detailed page for that beer
 
+
 #### Beer Detail:
 
 - Each beer has a detail page, showing any reviews that have been left.
@@ -55,18 +54,22 @@ I created wireframe sketches on [invision](https://www.invisionapp.com/) to get 
 - If the user is logged in they can edit the beer details or add a review.
 - Also on this page, similar beers (beers containing the same 'tags') are listed alongside, for inspiration!
 
+
 #### Profile:
 
 - Each user has a profile page where any beers they have 'liked' are listed, along with all their reviews.
 - A list of similar beers to their 'likes' is displayed for inspiration.
 
+
 #### People:
 
 - A list of all users. Clicking on the username brings you to that users' profile.
 
+
 #### Edit Beer:
 
 - Only the original user who added the beer can delete a beer, but any logged-in user can update the details. This is because beers can be added with only minimal info - in order to speed up the process, but it is nice to be able to add extra details and a photo at a later date, or allow others to do so. 
+
 
 #### Leave a Review
 
@@ -75,11 +78,13 @@ I created wireframe sketches on [invision](https://www.invisionapp.com/) to get 
 - Once a review is submitted, the average rating of the beer will update.
 - Each review shows the username as a link - so that users can view the profile of a particular reviewer.
 
+
 #### Add Beer:
 
 - Authenticated users can add a new beer. The form is simple and uncluttered. The minimal information required is: Beer name, Brewery, Country, Strength. 
 - Optionally, users can add: Photo, tags. If a photo is not provided, the default beer-list logo will act as a placeholder automatically.
 - It is not possible to add a beer that has already been added. User will be shown an error message and a link to the already existing beer.
+
 
 #### Login/Signup/password-reset:
 
@@ -88,10 +93,12 @@ I created wireframe sketches on [invision](https://www.invisionapp.com/) to get 
 - New passwords will be sent to the users email address.
 - I added email authentication to the default authentication system. Users can login with either their username or email address.
 
+
 #### Donate
 
 - A chance to donate £3 to the developers! This feature is included to demonstrate the implementation of a 'Stripe' payment system.
 - The payment form is set in 'test mode' and a card number of 4242 4242 4242 4242, with any expiration date in the future will demonstrate how it works.
+
 
 ### Features yet to implement
 
@@ -100,6 +107,7 @@ I created wireframe sketches on [invision](https://www.invisionapp.com/) to get 
 - The option to keep your liked beer list private
 - Add user profile photo
 
+
 ## Technologies Used
 
 - [Python 3](https://python.org/): The backend of this project is written in python
@@ -107,8 +115,8 @@ I created wireframe sketches on [invision](https://www.invisionapp.com/) to get 
 - [Bootstrap 4](https://getbootstrap.com/): I used the latest version of Bootstrap to speed up development and keep the design consistent throughout the app.
 - [Ajax](https://en.wikipedia.org/wiki/Ajax_(programming)): AJAX is used for the 'likes' to illiminate the need for a whole page refresh
 - [AWS S3](https://aws.amazon.com/s3/): Amazon Simple Storage Service (Amazon S3) is an object storage service. I created a new 'bucket' to host my static files and media.
-- [Travis CI](https://travis-ci.org/): Travis continious integration ensures the build is passing with each commit to Github.
 - [Stripe](https://stripe.com/): For secure payment
+
 
 ## Testing
 
@@ -132,7 +140,8 @@ The automated tests are seperated as follows:
 ##### Beer app
 
  - Tests for each view, making sure the correct status code returns, and the correct template is being rendered
- - 
+
+ 
 ##### Accounts app
 
  - Tests for each view, making sure redirects are functioning upon login and logout

@@ -186,10 +186,8 @@ def beer_edit(request, pk):
 
 @login_required   
 def like_beer(request):
-    # Get the beer object
     beer = get_object_or_404(Beer, id=request.POST.get('id'))
     is_liked = False
-    # Check if user has already liked the beer
     if beer.likes.filter(id=request.user.id).exists():
         beer.likes.remove(request.user)
         is_liked = False
@@ -204,6 +202,30 @@ def like_beer(request):
         #django recommends using render_to_string to cut down repetative loading and rendering of templates
         html = render_to_string('beer/like_section.html', context, request=request)
         return JsonResponse({'form':html})
+
+def user_likes(request, username):
+    user = get_object_or_404(User, username=username, is_active=True)
+    object_list = user.likes.all()
+    #user_review = object_list.filter(reviews__author=user)
+    paginator = Paginator(object_list, 8) # 8 posts in each page
+    page = request.GET.get('page')
+    try:
+        beers = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer deliver the first page
+        beers = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range deliver last page of results
+        beers = paginator.page(paginator.num_pages)
+    context = {
+        'beers': beers, 
+        'page':page, 
+        'user':user
+    }    
+
+    return render(request, 'beer/user_likes.html', context)    
+    
+    
     
 @login_required
 def beer_delete(request, pk):
