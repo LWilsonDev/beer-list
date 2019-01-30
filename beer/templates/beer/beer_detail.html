@@ -15,7 +15,7 @@
               <h1 class="small-heading mt-2 mb-2">{{beer.name}}</h1>
             <h4 class='brewery-text'>{{beer.brewery}}, {{beer.country_of_origin}} </h4>
             <p>{{beer.strength}}% ABV</p>
-            <p>Added by {{beer.added_by}}</p>
+            <p>Added by <a href="{{ beer.added_by.get_absolute_url }}">{{beer.added_by}}</a></p>
             {% if beer.average_rating %}
             <p>Average rating: {{beer.average_rating}}</p>
             {%endif%}
